@@ -3,10 +3,17 @@
 import Modal from "./components/Modal.svelte";
 import About from "./components/About.svelte";
 import TitleBar from "./components/TitleBar.svelte";
+import MenuBar from "./components/MenuBar.svelte";
 
 let isModalVisible = false;
 const showInfoModal = () => isModalVisible = true;
 const closeInfoModal = () => isModalVisible = false;
+
+let doUsePolarForm = false;
+
+const handleMenuAction = (action: string)=>{
+	console.log(action)
+}
 </script>
 
 
@@ -36,21 +43,12 @@ const closeInfoModal = () => isModalVisible = false;
 
 
 	<div id="menu-items-container">
-		<div class="menu-items-container__inner">
-			<label for="vector-representation" class="inline-block menu-item">
-				<input type="checkbox" id="vector-representation">
-				<span class="cartesian">{`(\\(x, y\\))`}</span>
-				<span class="polar">{`(\\(\\rho, \\alpha °\\))`}</span>
-			</label>
-			<ul class="reset flex">
-				<li><button class="menu-item"><i class="fas fa-recycle" aria-hidden="true"></i><span>Reuse</span></button></li>
-				<!-- <li><button class="menu-item"><i class="fas fa-trash-alt" aria-hidden="true"></i></button></li> -->
-				<li><button class="menu-item"><i class="far fa-trash-alt" aria-hidden="true"></i><span>Reset</span></button></li>
-				<li><button class="menu-item"><i class="fas fa-plus" aria-hidden="true"></i><span>New</span> </button></li>
-			</ul>
-		</div>
+		<MenuBar bind:usePolarForm={doUsePolarForm} on:selection={e => handleMenuAction(e.detail)}/>
 	</div>
 </main>
+
+
+
 
 <footer class="footer">
 	<About/>
@@ -74,6 +72,14 @@ main{
 	justify-content: space-between;
 	flex: 1 1 50vh;
 }
+
+
+
+
+
+
+
+
 #canvas-container{
 	max-width: min(50vh, 100%);
 	margin: 0 auto;
@@ -107,7 +113,7 @@ main{
 
 
 #input-container, 
-.menu-items-container__inner{
+:global(.menu-items-container__inner){
 	max-width: 500px;
 	width: 100%;
 	margin: 0 auto;
@@ -121,41 +127,7 @@ main{
 	background: #f5f5f5;
 	padding: 0 1rem;
 }
-.menu-items-container__inner{
-	display: flex;
-	justify-content: space-between;
-	background: #f5f5f5;
-}
-.menu-item{
-	/* padding: .7rem .8rem; */
-	background: none;
-	border: none;
-	height: 50px;
-	padding: .5rem;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-.menu-item:focus{
-	outline: 2px solid #aaa;
-	/* border-top: 2px solid #aaa; */
-}
-.menu-item:hover,
-.menu-item:active {
-  background-color: #ddd;
-  border-color: #ddd;
-  /* color: #eee; */
-}
-button.menu-item{
-	font-size: 1.2rem;
-	width: 50px;
-}
-button.menu-item span{
-	display: none;
-}
-.menu-item span{
-	margin-left: .5rem;
-}
+
 
 
 
@@ -210,28 +182,12 @@ button.menu-item span{
 		margin: 0 auto;
 		/* background: none; */
 	}
-	label.menu-item{
-		padding: .5rem 1rem;
-	}
 
 	.footer{
 		display: block;
 	}
 }
-@media screen and (min-width: 900px) {
-	button.menu-item{
-		width: auto;
-	}
-	button.menu-item span{
-		display: inline-block;
-		margin-left: .5rem;
-	}
-}
 
-#vector-representation ~ .cartesian{display: inline-block;}
-#vector-representation ~ .polar{display: none;}
-#vector-representation:checked ~ .cartesian{display: none;}
-#vector-representation:checked ~ .polar{display: inline-block;}
 
 
 
