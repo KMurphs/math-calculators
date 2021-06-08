@@ -6,3 +6,13 @@ export type TOperand = {
 };
 
 export type TOperands = TOperand[];
+
+
+const buildOperand = (x?: number, y?: number): TOperand => ({
+	isAddedToPrevious: true,
+	scalarMultiplier: 1,
+	xComponent: x ? x : 0,
+	yComponent: y ? y : 0
+});
+
+export { buildOperand };

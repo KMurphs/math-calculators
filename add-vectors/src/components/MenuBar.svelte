@@ -80,6 +80,12 @@ button.menu-item span{
 		margin-left: .5rem;
 	}
 }
+@media screen and (min-width: 1024px) {
+	button.menu-item{
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+}
 
 #vector-representation ~ .cartesian{display: inline-block;}
 #vector-representation ~ .polar{display: none;}
