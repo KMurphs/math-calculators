@@ -2,8 +2,6 @@
 import About from "./About.svelte";
 
 export let isVisible = false;
-// const showInfoModal = () => isVisible = true;
-// const hideInfoModal = () => isVisible = false;
 
 import { createEventDispatcher } from 'svelte';
 const dispatch = createEventDispatcher();
@@ -26,6 +24,13 @@ const closeModal = () => dispatch('close');
     </div>
 </div>
 <div class="md-overlay" on:click={closeModal}></div><!-- the overlay element -->
+
+
+
+
+
+
+
 
 <style>
 
