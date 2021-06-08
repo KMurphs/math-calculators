@@ -3,9 +3,11 @@ import About from "./About.svelte";
 
 export let isVisible = false;
 // const showInfoModal = () => isVisible = true;
-const hideInfoModal = () => isVisible = false;
+// const hideInfoModal = () => isVisible = false;
 
-
+import { createEventDispatcher } from 'svelte';
+const dispatch = createEventDispatcher();
+const closeModal = () => dispatch('close');
 </script>
 
 
@@ -19,11 +21,11 @@ const hideInfoModal = () => isVisible = false;
         <h3>About</h3>
         <div>
             <About/>
-            <button class="md-close" on:click={hideInfoModal}>Close</button>
+            <button class="md-close" on:click={closeModal}>Close</button>
         </div>
     </div>
 </div>
-<div class="md-overlay" on:click={hideInfoModal}></div><!-- the overlay element -->
+<div class="md-overlay" on:click={closeModal}></div><!-- the overlay element -->
 
 <style>
 

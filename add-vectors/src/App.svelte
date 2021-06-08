@@ -2,43 +2,24 @@
 
 import Modal from "./components/Modal.svelte";
 import About from "./components/About.svelte";
-
-const injectVHInCSS = ()=>{
-  // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
-  let vh = window.innerHeight * 0.01;
-  // Then we set the value in the --vh custom property to the root of the document
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
-}
-
-// Run it on load
-injectVHInCSS();
-// Run it on resize
-window.addEventListener('resize', injectVHInCSS);
+import TitleBar from "./components/TitleBar.svelte";
 
 let isModalVisible = false;
 const showInfoModal = () => isModalVisible = true;
+const closeInfoModal = () => isModalVisible = false;
 </script>
 
 
-<svelte:head>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrer-policy="no-referrer" />
-	<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css"> -->
-	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/2.0.0/remarkable.min.js" on:load={initializeRemarkable}></script> -->
-</svelte:head>
+
 
 <header>
-	<h1> 
-		<span class="title">
-			<a href="/" class="icon"><i class="fas fa-subscript"></i></a> 
-			<span>Add Vectors</span>
-		</span>
-		<button class="btn-info" on:click={showInfoModal}><i class="fas fa-info" aria-hidden="true"></i></button>
-	</h1>
+	<TitleBar on:showInfo={showInfoModal}/>
 </header>
 
+
+
 <main>
+
 	<div id="canvas-container" class="debug">
 		<canvas id="myCanvas" width="500" height="500" class="hidden-"
 				style="">
@@ -52,6 +33,7 @@ const showInfoModal = () => isModalVisible = true;
 	</div>
 
 	<div id="input-container">C</div>
+
 
 	<div id="menu-items-container">
 		<div class="menu-items-container__inner">
@@ -74,106 +56,25 @@ const showInfoModal = () => isModalVisible = true;
 	<About/>
 </footer>
 
-<Modal bind:isVisible={isModalVisible}/>
+<Modal bind:isVisible={isModalVisible} on:close={closeInfoModal}/>
 
 
 
 <style>
-:global(body),
-:global(body *) {
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-}
-:global(body) {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	height: 100vh;
-	height: calc(var(--vh, 1vh) * 100);
-}
-:global(.inline-block) {
-	display: inline-block;
-}
-:global(.debug-) {
-	border: 1px solid #999;
-}
-:global(.flex) {
-	display: flex;
-}
-:global(.hidden) {
-	display: none !important;
-}
-:global(ul.reset),
-:global(ul.reset li),
-:global(ul.reset ul li) {
-   margin:0;
-   padding: 0;
-   text-indent: 0;
-   list-style-type: none;
-}
-
 
 header{
 	padding: .5rem 1rem;
 	background: #333;
 	color: #eee;
 }
-header h1{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    line-height: 1;
-    font-size: 1.5rem;
-}
-header .title{
-    display: inline-flex;
-    align-items: baseline;
-}
-header .icon{
-    width: 2.2rem;
-    height: 2.2rem;
-    background: #eee;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    padding-left: 0.2rem;
-    margin-right: 1rem;
-    color: #333;
-}
-header .btn-info{
-    font-size: .8rem;
-    height: 30px;
-    width: 30px;
-    border: none;
-    background: rgba(0,0,0,.1);
-    color: #999;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 main{
-	/* width: 100%; */
-	/* max-width: 500px; */
-	/* margin: 0 auto; */
-	/* padding: 1rem; */
-	/* padding-bottom: 0; */
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	/* height: 100vh; */
-	/* height: calc(var(--vh, 1vh) * 100); */
 	flex: 1 1 50vh;
 }
 #canvas-container{
-	/* min-height: 5rem; */
-	/* background: #eee; */
-	/* display: flex; */
-	/* flex-direction: column; */
-	/* justify-content: center; */
 	max-width: min(50vh, 100%);
 	margin: 0 auto;
 	padding: 1rem;
@@ -315,9 +216,6 @@ button.menu-item span{
 
 	.footer{
 		display: block;
-	}
-	header .btn-info{
-		display: none;
 	}
 }
 @media screen and (min-width: 900px) {

@@ -61,3 +61,39 @@ button:not(:disabled):active {
 button:focus {
 	border-color: #666;
 }
+
+
+
+body,
+body *{
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+body{
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	height: 100vh;
+	height: calc(var(--vh, 1vh) * 100);
+}
+.inline-block{
+	display: inline-block;
+}
+.debug-{
+	border: 1px solid #999;
+}
+.flex{
+	display: flex;
+}
+.hidden{
+	display: none !important;
+}
+ul.reset,
+ul.reset li,
+ul.reset ul li{
+   margin:0;
+   padding: 0;
+   text-indent: 0;
+   list-style-type: none;
+}
