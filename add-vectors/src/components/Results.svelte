@@ -1,10 +1,10 @@
 
 <script lang="ts">
 import { onMount, beforeUpdate, afterUpdate } from 'svelte';
-import { texFromCartesianVector, texFromPolarVector } from "../mathjax.utils";
-import { toPolar } from "../vector.utils";
-import { clearCanvas, drawCanvasAxis, drawVectors } from "../canvas.utils";
-import type { TCanvasData } from "../canvas.utils";
+import { toPolar } from "../utils/vector.utils";
+import { texFromCartesianVector, texFromPolarVector } from "../utils/mathjax.utils";
+import { clearCanvas, drawCanvasAxis, drawVectors } from "../utils/canvas.utils";
+import type { TCanvasData } from "../utils/canvas.utils";
 import type { TComponent, TComponents } from "./Results.utils";
 
 export let data: TComponents = [];

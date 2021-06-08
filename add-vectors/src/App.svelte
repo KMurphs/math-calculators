@@ -6,23 +6,15 @@ import TitleBar from "./components/TitleBar.svelte";
 import MenuBar from "./components/MenuBar.svelte";
 import Operands from "./components/Operands.svelte";
 import Results from "./components/Results.svelte";
-import { buildOperand } from "./components/Operands.utils";
-import { addCartesianVectors, scalarCartesianProduct } from "./vector.utils";
+import { buildOperand, sumOperands } from "./components/Operands.utils";
 
 
 import type { TOperands } from "./components/Operands.utils";
 
 
 let operands: TOperands = [];
-const sumOperands = (acc, v) => addCartesianVectors(
-	acc, 
-	scalarCartesianProduct(
-		v.scalarMultiplier * (v.isAddedToPrevious ? 1 : -1), 
-		{x: v.xComponent, y: v.yComponent}
-	)
-);
-// $: result = operands.reduce(sumOperands, {x: 0, y: 0});
-$: result = {x: 1.25, y: 2.35};
+$: result = operands.reduce(sumOperands, {x: 0, y: 0});
+// $: result = {x: 1.25, y: 2.35};
 
 
 let isModalVisible = false;
@@ -38,6 +30,9 @@ const handleMenuAction = (action: string)=>{
 	if(action == 'new-session') { result = {x: 0, y: 0}; operands = [buildOperand(result.x, result.y)];  return; }
 	if(action == 'new-operand') { result = {x: 0, y: 0}; operands = [...operands, buildOperand()];  return; }
 }
+
+
+
 </script>
 
 
