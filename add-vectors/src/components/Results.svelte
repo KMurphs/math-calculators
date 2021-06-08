@@ -58,15 +58,15 @@ onMount(() => {
 });
 
 
-$: data && canvas && (usePolarForm || !usePolarForm) && clearCanvas(canvas);
-$: data && canvas && (usePolarForm || !usePolarForm) && drawCanvasAxis(canvas);
-$: data && canvas && (usePolarForm || !usePolarForm) && drawVectors(
+$: data && canvas && (usePolarForm || true) && clearCanvas(canvas);
+$: data && canvas && (usePolarForm || true) && drawCanvasAxis(canvas);
+$: data && canvas && (usePolarForm || true) && drawVectors(
     canvas, 
     usePolarForm ? null : data,
     usePolarForm ? data.map(toPolar) : null,
     false
 );
-$: data && canvas && (usePolarForm || !usePolarForm) && drawVectors(
+$: data && canvas && (usePolarForm || true) && drawVectors(
     canvas, 
     usePolarForm ? null : [result],
     usePolarForm ? [result].map(toPolar) : null,
@@ -82,9 +82,7 @@ $: data && canvas && (usePolarForm || !usePolarForm) && drawVectors(
 </canvas>
 
 <div id="resultant" class="resultant">
-    <!-- {texResult} -->
-    <!-- {`\\(\\overrightarrow{R}\\) = \\(\\sum_{i}\\vec{V_i}\\) = 1.234 \\(\\overrightarrow{e_x}\\) + 2536 \\(\\overrightarrow{e_y}\\) = 1.234 ∠ 2536°`} -->
-    <!-- {`\\(\\vec x\\)  and \\(\\overrightarrow{e_x}\\)  and \\(\\overrightarrow{R}\\) and \\(\\overrightarrow{x_1y^2}\\)`} -->
+    {`\\(\\overrightarrow{R}\\) = \\(\\sum_{i}\\vec{V_i}\\) `} 
 </div>
 
 
@@ -107,5 +105,4 @@ canvas{
 	margin: 0 auto;
     text-align: center;
 }
-
 </style>
