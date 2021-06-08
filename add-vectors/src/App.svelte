@@ -10,6 +10,10 @@ const injectVHInCSS = ()=>{
 injectVHInCSS();
 // Run it on resize
 window.addEventListener('resize', injectVHInCSS);
+
+let isModalVisible = false;
+const showInfoModal = () => isModalVisible = true;
+const hideInfoModal = () => isModalVisible = false;
 </script>
 
 
@@ -26,7 +30,7 @@ window.addEventListener('resize', injectVHInCSS);
 			<a href="/" class="icon"><i class="fas fa-subscript"></i></a> 
 			<span>Add Vectors</span>
 		</span>
-		<button class="btn-info"><i class="fas fa-info" aria-hidden="true"></i></button>
+		<button class="btn-info" on:click={showInfoModal}><i class="fas fa-info" aria-hidden="true"></i></button>
 	</h1>
 </header>
 <main>
@@ -67,6 +71,23 @@ window.addEventListener('resize', injectVHInCSS);
 	© 2021 Stephane K.  All rights reserved
 </p>
 
+
+
+<div class={`md-modal md-effect-12 ${isModalVisible ? 'md-show' : ''}`} id="modal-12">
+    <div class="md-content">
+        <h3>Modal Dialog</h3>
+        <div>
+            <p>This is a modal window. You can do the following things with it:</p>
+            <ul>
+                <li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+                <li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+                <li><strong>Close:</strong> click on the button below to close the modal.</li>
+            </ul>
+            <button class="md-close" on:click={hideInfoModal}>Close me!</button>
+        </div>
+    </div>
+</div>
+<div class="md-overlay" on:click={hideInfoModal}></div><!-- the overlay element -->
 
 <style>
 :global(body),
@@ -324,4 +345,144 @@ button.menu-item span{
 #vector-representation ~ .polar{display: none;}
 #vector-representation:checked ~ .cartesian{display: none;}
 #vector-representation:checked ~ .polar{display: inline-block;}
+
+
+
+
+
+
+
+
+
+
+
+.md-modal {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: 50%;
+	max-width: 630px;
+	min-width: 320px;
+	height: auto;
+	z-index: 2000;
+	visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	-moz-transform: translateX(-50%) translateY(-50%);
+	-ms-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
+}
+
+.md-show {
+	visibility: visible;
+}
+
+.md-overlay {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	visibility: hidden;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+	opacity: 0;
+	background: rgba(143,27,15,0.8);
+	background: rgba(113, 113, 113, 0.8);
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+.md-show ~ .md-overlay {
+	opacity: 1;
+	visibility: visible;
+}
+
+/* Content styles */
+.md-content {
+	color: #fff;
+	color: #333;
+	background: #e74c3c;
+	background: #dedede;
+	position: relative;
+	border-radius: 3px;
+	margin: 0 auto;
+}
+
+.md-content h3 {
+	margin: 0;
+	padding: 0.4em;
+	text-align: center;
+	font-size: 2.4em;
+	font-weight: 300;
+	opacity: 0.8;
+	background: rgba(0,0,0,0.1);
+	border-radius: 3px 3px 0 0;
+}
+
+.md-content > div {
+	padding: 15px 40px 30px;
+	margin: 0;
+	font-weight: 300;
+	font-size: 1.15em;
+}
+
+.md-content > div p {
+	margin: 0;
+	padding: 10px 0;
+}
+
+.md-content > div ul {
+	margin: 0;
+	padding: 0 0 30px 20px;
+}
+
+.md-content > div ul li {
+	padding: 5px 0;
+}
+
+.md-content button {
+	display: block;
+	margin: 0 auto;
+	font-size: 0.8em;
+}
+
+/* Effect 12:  Just me */
+.md-effect-12 .md-content {
+	-webkit-transform: scale(0.8);
+	-moz-transform: scale(0.8);
+	-ms-transform: scale(0.8);
+	transform: scale(0.8);
+	opacity: 0;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+.md-show.md-effect-12 ~ .md-overlay {
+	background: #e74c3c;
+	background: #dedede;
+} 
+
+.md-effect-12 .md-content h3,
+.md-effect-12 .md-content {
+	background: transparent;
+}
+
+.md-show.md-effect-12 .md-content {
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	opacity: 1;
+}
+.md-close{
+	padding: .8rem 1rem;
+	border-radius: 8px;
+	min-width: 15rem;
+	background: #333;
+	color: #eee;
+}
 </style>
