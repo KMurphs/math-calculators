@@ -129,7 +129,7 @@ header .icon{
     align-items: center;
     border-radius: 50%;
     font-size: 1.2rem;
-    padding-left: 0.3rem;
+    padding-left: 0.2rem;
     margin-right: 1rem;
     color: #333;
 }
@@ -167,6 +167,7 @@ main{
 	max-width: min(50vh, 100%);
 	margin: 0 auto;
 	padding: 1rem;
+	overflow: auto;
 }
 #canvas-container canvas{
 	border: 1px solid #c3c3c3; 
@@ -177,6 +178,9 @@ main{
 }
 #canvas-container canvas{
 	margin-bottom: .5rem;
+}
+#canvas-container #resultant{
+	margin: 0 auto;
 }
 
 
@@ -209,6 +213,7 @@ main{
 .menu-items-container__inner{
 	display: flex;
 	justify-content: space-between;
+	background: #f5f5f5;
 }
 .menu-item{
 	/* padding: .7rem .8rem; */
@@ -260,21 +265,36 @@ button.menu-item{
 	main{
 		flex-wrap: wrap;
 		max-width: 100%;
-		padding: 3rem;
+		padding: 1rem 3rem;
 	}
 	#canvas-container{
 		flex: 0 0 100%;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		padding: 0 2rem;
+		max-width: 500px;
+		height: 100%;
+		/* padding: 0 2rem; */
 	}
 	#canvas-container,
 	#menu-items-container,
 	#input-container{
 		width: 50%;
 		/* padding: 0 2rem; */
-		max-width: 50vw;
+		/* max-width: 50vw; */
+		/* max-width: 500px; */
+		/* max-width: calc(50vw - 4rem); */
+	}
+	#menu-items-container,
+	#input-container{
+		/* padding: 0 2rem; */
+		/* max-width: 50vw; */
+		max-width: 500px;
+		/* max-width: calc(50vw - 4rem); */
+	}
+	#menu-items-container{
+		margin: 0 auto;
+		/* background: none; */
 	}
 	label.menu-item{
 		padding: .5rem 1rem;
