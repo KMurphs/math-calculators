@@ -52,10 +52,10 @@ window.addEventListener('resize', injectVHInCSS);
 				<span class="polar">{`(\\(\\rho, \\alpha °\\))`}</span>
 			</label>
 			<ul class="reset flex">
-				<li><button class="menu-item"><i class="fas fa-recycle" aria-hidden="true"></i></button></li>
+				<li><button class="menu-item"><i class="fas fa-recycle" aria-hidden="true"></i><span>Reuse</span></button></li>
 				<!-- <li><button class="menu-item"><i class="fas fa-trash-alt" aria-hidden="true"></i></button></li> -->
-				<li><button class="menu-item"><i class="far fa-trash-alt" aria-hidden="true"></i></button></li>
-				<li><button class="menu-item"><i class="fas fa-plus" aria-hidden="true"></i></button></li>
+				<li><button class="menu-item"><i class="far fa-trash-alt" aria-hidden="true"></i><span>Reset</span></button></li>
+				<li><button class="menu-item"><i class="fas fa-plus" aria-hidden="true"></i><span>New</span> </button></li>
 			</ul>
 		</div>
 	</div>
@@ -239,6 +239,9 @@ button.menu-item{
 	font-size: 1.2rem;
 	width: 50px;
 }
+button.menu-item span{
+	display: none;
+}
 .menu-item span{
 	margin-left: .5rem;
 }
@@ -299,11 +302,21 @@ button.menu-item{
 	label.menu-item{
 		padding: .5rem 1rem;
 	}
+
 	.footer{
 		display: block;
 	}
 	header .btn-info{
 		display: none;
+	}
+}
+@media screen and (min-width: 900px) {
+	button.menu-item{
+		width: auto;
+	}
+	button.menu-item span{
+		display: inline-block;
+		margin-left: .5rem;
 	}
 }
 
