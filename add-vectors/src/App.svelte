@@ -6,7 +6,10 @@ import TitleBar from "./components/TitleBar.svelte";
 import MenuBar from "./components/MenuBar.svelte";
 import Operands from "./components/Operands.svelte";
 import Results from "./components/Results.svelte";
+import type { TOperands } from "./components/Operands.utils";
 
+
+let operands: TOperands = [];
 
 
 let isModalVisible = false;
@@ -31,11 +34,13 @@ const handleMenuAction = (action: string)=>{
 
 <main>
 	<div id="results-container" class="debug">
-		<Results/>
+		<Results data={operands.map(op => ({ x: op.xComponent, y: op.xComponent }))} 
+				 usePolarForm={doUsePolarForm} />
 	</div>
 
 	<div id="inputs-container">
-		<Operands/>
+		<Operands data={operands}
+				  usePolarForm={doUsePolarForm} />
 	</div>
 
 	<div id="menu-items-container">
