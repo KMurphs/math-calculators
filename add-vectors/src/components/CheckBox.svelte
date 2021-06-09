@@ -13,6 +13,8 @@ export let extraClasses = "";
 	
 	<!-- Customization element for the checkbox -->
 	<span class="check-toggle"></span>
+
+	<!-- Slot to support custom/optional text for the checked/unchecked state -->
 	<slot></slot>
 </label>
 
