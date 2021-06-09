@@ -5,7 +5,7 @@ export let extraClasses = "";
 </script>
 
 
-
+<!-- https://hackernoon.com/hacking-custom-checkboxes-and-radios-5d48230440d -->
 <label for="vector-representation" class={`check-custom-container ${extraClasses}`}>
 	<!-- Input element for the checkbox -->
 	<!-- Add a `toggle-switch` class to the input element -->
