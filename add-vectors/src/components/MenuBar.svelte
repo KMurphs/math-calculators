@@ -1,5 +1,6 @@
 
 <script lang="ts">
+import CheckBox from "./CheckBox.svelte";
 export let usePolarForm = false;
 
 import { createEventDispatcher } from 'svelte';
@@ -13,11 +14,16 @@ const onReset = ()=>onSelection("reset");
 
 <div class="menu-items-container__inner">
 
-	<label for="vector-representation" class="inline-block menu-item">
+	<!-- <label for="vector-representation" class="inline-block menu-item">
 		<input type="checkbox" id="vector-representation" bind:checked={usePolarForm}>
 		<span class="cartesian">{`(\\(x, y\\))`}</span>
 		<span class="polar">{`(\\(\\rho, \\alpha °\\))`}</span>
-	</label>
+	</label> -->
+	<CheckBox bind:checked={usePolarForm} extraClasses={"inline-block menu-item"}>
+		<span class="cartesian">{`(\\(x, y\\))`}</span>
+		<span class="polar">{`(\\(\\rho, \\alpha °\\))`}</span>
+	</CheckBox>
+
 
 	<ul class="reset flex">
 		<li><button class="menu-item" on:click={onNewSession}><i class="fas fa-recycle" aria-hidden="true"></i><span>Reuse</span></button></li>
@@ -33,6 +39,7 @@ const onReset = ()=>onSelection("reset");
 	display: flex;
 	justify-content: space-between;
 	background: #f5f5f5;
+	overflow-y: hidden;
 }
 .menu-item{
 	/* padding: .7rem .8rem; */
@@ -66,8 +73,11 @@ button.menu-item span{
 }
 
 
+
+
+
 @media screen and (min-width: 640px) {
-	label.menu-item{
+	:global(label.menu-item){
 		padding: .5rem 1rem;
 	}
 }
@@ -86,9 +96,14 @@ button.menu-item span{
 		padding-right: 1rem;
 	}
 }
-
-#vector-representation ~ .cartesian{display: inline-block;}
-#vector-representation ~ .polar{display: none;}
-#vector-representation:checked ~ .cartesian{display: none;}
-#vector-representation:checked ~ .polar{display: inline-block;}
+:global(label.menu-item){
+	padding: 0 1rem;
+	transform: scale(1.2, 1.2);
+}
+:global(#vector-representation ~ .cartesian),
+:global(#vector-representation ~ .polar){margin-left: .5rem;}
+:global(#vector-representation ~ .cartesian){display: inline-block;}
+:global(#vector-representation ~ .polar){display: none;}
+:global(#vector-representation:checked ~ .cartesian){display: none;}
+:global(#vector-representation:checked ~ .polar){display: inline-block;}
 </style>
