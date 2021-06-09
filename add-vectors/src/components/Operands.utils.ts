@@ -8,11 +8,18 @@ const buildOperand = (x?: number, y?: number): TOperand => ({
 	xComponent: x ? x : 0,
 	yComponent: y ? y : 0
 });
+const operandToVector = (v: TOperand) => {
+	return scalarCartesianProduct(
+		v.scalarMultiplier , 
+		{x: v.xComponent, y: v.yComponent}
+	)
+};
 const sumOperands = (acc, v) => addCartesianVectors(
 	acc, 
 	scalarCartesianProduct(
-		v.scalarMultiplier * (v.isAddedToPrevious ? 1 : -1), 
-		{x: v.xComponent, y: v.yComponent}
+		(v.isAddedToPrevious ? 1 : -1), 
+		operandToVector(v)
 	)
 );
-export { buildOperand, sumOperands };
+export { buildOperand, sumOperands, operandToVector };
+

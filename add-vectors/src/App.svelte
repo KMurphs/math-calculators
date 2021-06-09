@@ -12,7 +12,27 @@ import type { TOperands } from "./components/Operands.types";
 import type { TCartesianVector } from "./utils/vector.types";
 
 
-let operands: TOperands = [];
+let operands: TOperands = [{
+    isAddedToPrevious: true,
+	scalarMultiplier: 1,
+	xComponent: 1.235,
+	yComponent: 12.345
+},{
+    isAddedToPrevious: true,
+	scalarMultiplier: 1,
+	xComponent: 1.235,
+	yComponent: 12.345
+},{
+    isAddedToPrevious: true,
+	scalarMultiplier: 1,
+	xComponent: 1.235,
+	yComponent: 12.345
+},{
+    isAddedToPrevious: true,
+	scalarMultiplier: 1,
+	xComponent: 1.235,
+	yComponent: 12.345
+}];
 let result: TCartesianVector = {x: 0, y: 0};
 $: result = operands.reduce(sumOperands, {x: 0, y: 0});
 // $: result = {x: 1.25, y: 2.35};
