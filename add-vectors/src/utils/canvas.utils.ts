@@ -1,12 +1,7 @@
-import { TCartesianVector, toCartesian, TPolarVector } from "./vector.utils";
-export type TCanvasData = {
-    canvas: any,
-    context: any,
-    xCenter: number, 
-    yCenter: number,  
-    xUnit: number,  
-    yUnit: number
-}
+import { toCartesian } from "./vector.utils";
+import type { TCartesianVector, TPolarVector } from "./vector.types";
+import type { TCanvasData } from "./canvas.types";
+
 
 
 const strokeNormalColor = "#000";

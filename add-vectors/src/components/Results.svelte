@@ -4,11 +4,12 @@ import { onMount, beforeUpdate, afterUpdate } from 'svelte';
 import { toPolar } from "../utils/vector.utils";
 import { texFromCartesianVector, texFromPolarVector } from "../utils/mathjax.utils";
 import { clearCanvas, drawCanvasAxis, drawVectors } from "../utils/canvas.utils";
-import type { TCanvasData } from "../utils/canvas.utils";
-import type { TComponent, TComponents } from "./Results.utils";
+import type { TCanvasData } from "../utils/canvas.types";
+import type { TComponents } from "./Results.types";
+import type { TCartesianVector } from '../utils/vector.types';
 
 export let data: TComponents = [];
-export let result: TComponent = {x: 1.25, y: 2.35};
+export let result: TCartesianVector = {x: 1.25, y: 2.35};
 export let usePolarForm: boolean = false;
 
 
@@ -41,7 +42,7 @@ afterUpdate(() => (window as any).MathJax?.typeset());
 const canvasHeight = 300;
 const canvasWidth = 300;
 let canvas: TCanvasData = null;
-const getUnit = (arr: TComponent[])=>0.4 * canvasWidth / arr.reduce((acc, item) => Math.max(acc, item.x, item.y), 1);
+const getUnit = (arr: TComponents)=>0.4 * canvasWidth / arr.reduce((acc, item) => Math.max(acc, item.x, item.y), 1);
 
 onMount(() => {
     const canvasNode: HTMLCanvasElement = document.getElementById('canvas') as HTMLCanvasElement;

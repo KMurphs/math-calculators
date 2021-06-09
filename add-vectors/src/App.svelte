@@ -8,11 +8,12 @@ import Operands from "./components/Operands.svelte";
 import Results from "./components/Results.svelte";
 import { buildOperand, sumOperands } from "./components/Operands.utils";
 
-
-import type { TOperands } from "./components/Operands.utils";
+import type { TOperands } from "./components/Operands.types";
+import type { TCartesianVector } from "./utils/vector.types";
 
 
 let operands: TOperands = [];
+let result: TCartesianVector = {x: 0, y: 0};
 $: result = operands.reduce(sumOperands, {x: 0, y: 0});
 // $: result = {x: 1.25, y: 2.35};
 

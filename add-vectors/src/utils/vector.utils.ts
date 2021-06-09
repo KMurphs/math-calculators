@@ -1,6 +1,4 @@
-export interface TCartesianVector {x: number, y: number}
-export interface TPolarVector {radius: number, degreeAngle: number}
-
+import type { TCartesianVector, TPolarVector } from "./vector.types";
 
 const degreesToRadians = Math.PI / 180;
 const degreesFromRadians = (radians: number): number => (radians / degreesToRadians);

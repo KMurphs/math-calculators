@@ -1,6 +1,6 @@
 
 <script lang="ts">
-import type { TOperands } from "./Operands.utils";
+import type { TOperands } from "./Operands.types";
 export let data: TOperands = [];
 export let usePolarForm: boolean = false;
 </script>
