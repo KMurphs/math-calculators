@@ -6,8 +6,11 @@ import TitleBar from "./components/TitleBar.svelte";
 import MenuBar from "./components/MenuBar.svelte";
 import Operands from "./components/Operands.svelte";
 import Results from "./components/Results.svelte";
-import { buildOperand, sumOperands } from "./components/Operands.utils";
-
+import VectorCanvas from "./components/VectorCanvas.svelte";
+import { buildOperand, operandToVector, sumOperands } from "./components/Operands.utils";
+import { texFromCartesianVector, texFromPolarVector } from "./utils/mathjax.utils";
+import { toPolar } from "./utils/vector.utils";
+import { getVectorsDrawer as _getVectorsDrawer } from "./utils/canvas.utils";
 import type { TOperands } from "./components/Operands.types";
 import type { TCartesianVector } from "./utils/vector.types";
 
@@ -33,9 +36,11 @@ let operands: TOperands = [{
 	xComponent: 1.235,
 	yComponent: 12.345
 }];
-let result: TCartesianVector = {x: 0, y: 0};
-$: result = operands.reduce(sumOperands, {x: 0, y: 0});
-// $: result = {x: 1.25, y: 2.35};
+$: vectors = operands.map(operandToVector);
+
+
+let resultant: TCartesianVector = {x: 0, y: 0};
+$: resultant = operands.reduce(sumOperands, {x: 0, y: 0});
 
 
 let isModalVisible = false;
@@ -43,17 +48,28 @@ const showInfoModal = () => isModalVisible = true;
 const closeInfoModal = () => isModalVisible = false;
 
 
+
+
 let doUsePolarForm = false;
+/** Canvas Logic */
+$: getDrawerForCurrentRepresentation = _getVectorsDrawer.bind(null, doUsePolarForm);
+/** Tex Logic */
+const _vectorToTex = (usePolarForm: boolean, vector: TCartesianVector) => {
+    if(!vector) return "";
+
+	if(!usePolarForm) return texFromCartesianVector(vector.x, vector.y);
+    const polar = toPolar({x: vector.x, y: vector.y});
+    return texFromPolarVector(polar.radius, polar.degreeAngle);
+};
+$: vectorRepresentationToTex = _vectorToTex.bind(null, doUsePolarForm);
+
 
 
 const handleMenuAction = (action: string)=>{
-	if(action == 'reset') { operands = []; result = {x: 0, y: 0}; return; }
-	if(action == 'new-session') { result = {x: 0, y: 0}; operands = [buildOperand(result.x, result.y)];  return; }
-	if(action == 'new-operand') { result = {x: 0, y: 0}; operands = [...operands, buildOperand()];  return; }
+	if(action == 'reset') { operands = []; resultant = {x: 0, y: 0}; return; }
+	if(action == 'new-session') { operands = [buildOperand(resultant.x, resultant.y)]; resultant = {x: 0, y: 0};  return; }
+	if(action == 'new-operand') { operands = [...operands, buildOperand()]; resultant = {x: 0, y: 0};  return; }
 }
-
-
-
 </script>
 
 
@@ -65,10 +81,12 @@ const handleMenuAction = (action: string)=>{
 
 <main>
 	<div id="results-container" class="debug">
-		<Results  usePolarForm={doUsePolarForm} data={operands.map(op => ({ x: op.xComponent, y: op.xComponent }))} {result}  />
+		<Results vectorToTex={vectorRepresentationToTex} {resultant}  >
+			<VectorCanvas slot="canvas" {vectors} {resultant} getDrawer={getDrawerForCurrentRepresentation}/> 
+		</Results>
 	</div>
 	<div id="inputs-container">
-		<Operands usePolarForm={doUsePolarForm} data={operands}  />
+		<Operands vectorToTex={vectorRepresentationToTex} data={operands}  />
 	</div>
 	<div id="menu-items-container">
 		<MenuBar  bind:usePolarForm={doUsePolarForm} on:selection={e => handleMenuAction(e.detail)}/>
@@ -86,7 +104,6 @@ const handleMenuAction = (action: string)=>{
 
 
 <style>
-
 header{
 	padding: .5rem 1rem;
 	background: #333;

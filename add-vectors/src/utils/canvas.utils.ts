@@ -1,6 +1,6 @@
-import { toCartesian } from "./vector.utils";
+import { toCartesian, toPolar } from "./vector.utils";
 import type { TCartesianVector, TPolarVector } from "./vector.types";
-import type { TCanvasData } from "./canvas.types";
+import type { TCanvasParameters } from "./canvas.types";
 
 
 
@@ -10,7 +10,7 @@ const DECIMAL_PLACES = 2;
 const formatNumber = (num: number) => num.toFixed(DECIMAL_PLACES);
 
 
-function clearCanvas({canvas, context}: TCanvasData){
+function clearCanvas({canvas, context}: TCanvasParameters){
     if(!context || !canvas) return;
     _clearCanvas(context, canvas.width, canvas.height);
 }
@@ -18,7 +18,7 @@ function _clearCanvas(context: any, canvasWidth: number, canvasHeight: number){
     if(!context) return;
     context.clearRect(0, 0, canvasWidth, canvasHeight);
 }
-function drawCanvasAxis({canvas, context, xCenter, yCenter}: TCanvasData){
+function drawCanvasAxis({canvas, context, xCenter, yCenter}: TCanvasParameters){
     if(!canvas) return;
     _drawCanvasAxis(context, xCenter, yCenter, canvas.width, canvas.height);
 }
@@ -76,34 +76,62 @@ function drawCanvasArrow(context: any, fromx: number, fromy: number, tox: number
 
 
 
-function drawPolarVector(canvasData: TCanvasData, length: number, degreeAngleToHorizontal: number, doAddCoords = false){
-    const cartesianVector = toCartesian({radius: length, degreeAngle: degreeAngleToHorizontal})
+function drawPolarVector(canvasData: TCanvasParameters, length: number, degreeAngleToHorizontal: number, doAddCoords = false){
+    const cartesianVector = toCartesian({radius: length, degreeAngle: degreeAngleToHorizontal});
     drawCartesianVector(canvasData, cartesianVector.x, cartesianVector.y, doAddCoords, `${formatNumber(length)} ∠ ${formatNumber(degreeAngleToHorizontal)}°`);
 }
-function drawCartesianVector(canvasData: TCanvasData, xComponent: number, yComponent: number, doAddCoords = false, label?: string){
+function drawCartesianVector(canvasData: TCanvasParameters, xComponent: number, yComponent: number, doAddCoords = false, label?: string){
     if(xComponent == 0 && yComponent == 0) return;
     drawCanvasArrow(canvasData.context, canvasData.xCenter, canvasData.yCenter, canvasData.xCenter + canvasData.xUnit * xComponent, canvasData.yCenter - canvasData.yUnit * yComponent);
     if(doAddCoords) addCoordinates(canvasData.context, label ? label : `(${formatNumber(xComponent)}, ${formatNumber(yComponent)})`, canvasData.xCenter + canvasData.xUnit * xComponent, canvasData.yCenter - canvasData.yUnit * yComponent, xComponent > 0, yComponent < 0);
 }
-function drawVectors(canvasData: TCanvasData, cartesianVectors: TCartesianVector[], polarVectors: TPolarVector[], willDrawResultant = false){
-    if(!canvasData.canvas || !canvasData.context) return;
+// function drawVectors(canvasData: TCanvasParameters, cartesianVectors: TCartesianVector[], polarVectors: TPolarVector[], willDrawResultant = false){
+//     if(!canvasData.canvas || !canvasData.context) return;
 
-    canvasData.context.lineWidth = 1;
-    canvasData.context.strokeStyle = willDrawResultant ? strokeAccentColor : strokeNormalColor;
-    canvasData.context.beginPath();
+//     canvasData.context.lineWidth = 1;
+//     canvasData.context.strokeStyle = willDrawResultant ? strokeAccentColor : strokeNormalColor;
+//     canvasData.context.beginPath();
 
-    cartesianVectors && cartesianVectors.forEach((vector) => drawCartesianVector(canvasData, vector.x, vector.y, true));
-    polarVectors && polarVectors.forEach((vector) => drawPolarVector(canvasData, vector.radius, vector.degreeAngle, true));
+//     cartesianVectors && cartesianVectors.forEach((vector) => drawCartesianVector(canvasData, vector.x, vector.y, true));
+//     polarVectors && polarVectors.forEach((vector) => drawPolarVector(canvasData, vector.radius, vector.degreeAngle, true));
 
-    canvasData.context.stroke();
-    // canvasData.context.strokeStyle = strokeNormalColor;
+//     canvasData.context.stroke();
+//     // canvasData.context.strokeStyle = strokeNormalColor;
+// }
+function drawVector(usePolarForm:boolean, canvasData: TCanvasParameters, xComponent: number, yComponent: number, doAddCoords = false, label?: string){
+    if(!usePolarForm) return drawCartesianVector(canvasData, xComponent, yComponent, doAddCoords, label);
+    const polar = toPolar({x: xComponent, y: yComponent});
+    return drawPolarVector(canvasData, polar.radius, polar.degreeAngle, doAddCoords);
+};
+function getVectorsDrawer(usePolarForm: boolean, canvasData: TCanvasParameters){
+
+    const drawFunction = drawVector.bind(null, usePolarForm);
+
+    return (vectorsToDraw: TCartesianVector[], penColor: string = "#000")=>{
+        canvasData.context.lineWidth = 1;
+        canvasData.context.strokeStyle = penColor;
+        canvasData.context.beginPath();
+
+        vectorsToDraw.forEach((vector) => drawFunction(canvasData, vector.x, vector.y, true));
+        
+        canvasData.context.stroke();
+        // canvasData.context.strokeStyle = strokeNormalColor;
+    }
 }
 
 
+const getUnit = (canvasWidth: number, arr: TCartesianVector[])=> (!arr ? 10 : 0.4 * canvasWidth / arr.reduce((acc, item) => Math.max(acc, item.x, item.y), 1));
+const buildCanvasData = (canvasNode: HTMLCanvasElement, unit: number): TCanvasParameters=>({
+    canvas: canvasNode,
+    context: canvasNode.getContext("2d"),
+    xCenter: canvasNode.width / 2, 
+    yCenter: canvasNode.height / 2,  
+    xUnit: unit,  
+    yUnit: unit
+})
 
 
-
-export { drawCanvasAxis, clearCanvas, drawCartesianVector, drawPolarVector, drawVectors };
+export { drawCanvasAxis, clearCanvas, drawCartesianVector, drawPolarVector, getVectorsDrawer, getUnit, buildCanvasData };
 
 
 

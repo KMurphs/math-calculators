@@ -3,50 +3,28 @@
 
 
 <script lang="ts">
-import { afterUpdate, beforeUpdate, onMount } from "svelte";
-
-import { texFromCartesianVector, texFromPolarVector } from "../utils/mathjax.utils";
-import { toPolar } from "../utils/vector.utils";
-import type { TOperand } from "./Operands.types";
-import { operandToVector } from "./Operands.utils";
+import MathJaxNode from "./MathJaxNode.svelte";
 import RadioButton from "./RadioButton.svelte";
+import { operandToVector } from "./Operands.utils";
+import type { TOperand } from "./Operands.types";
+
 
 export let id = 0;
 const actualId = `${new Date().getTime()}-${id}`;
+
 
 let operations = ["plus","minus"]
 let operationsIndex = 0;
 let addToPrevious = true;
 $: addToPrevious = operationsIndex == 0;
 
+
+export let vectorToTex: Function;
+export let operand: TOperand;
+$: texVector = `\\(\\overrightarrow{V_${id}}\\) = ` + vectorToTex(operandToVector(operand));
+
+
 let isEditing = false;
-
-export let usePolarForm = false;
-export let vector: TOperand;
-
-/** Tex Logic */
-const resultToTex = (usePolarForm, vector) => {
-    if(!usePolarForm) return texFromCartesianVector(vector.x, vector.y);
-    const polar = toPolar({x: vector.x, y: vector.y});
-    return texFromPolarVector(polar.radius, polar.degreeAngle);
-};
-
-
-
-// http://docs.mathjax.org/en/latest/web/typeset.html
-// window.MathJax.typesetClear()
-// node.innerHTML = '$$\\frac{a}{1-a^3}$$';
-// window.MathJax.typeset()
-let operand: HTMLElement = null;
-onMount(() => (operand = document.getElementById(`operand-${actualId}`)));
-beforeUpdate(() => {
-    if(!operand) return;
-    (window as any).MathJax?.typesetClear();
-    operand.innerHTML = `\\(\\overrightarrow{V_${id}}\\) = ` + resultToTex(usePolarForm, operandToVector(vector));
-});
-afterUpdate(() => (window as any).MathJax?.typeset());
-
-
 </script>
 
 
@@ -64,15 +42,19 @@ afterUpdate(() => (window as any).MathJax?.typeset());
 		{/each}
 	</div>
 
-	<!-- <span class="operand-name">{`\\(\\overrightarrow{V_${1}}\\) = `}</span> -->
+
 	<div class="operand-expression-container">
-		<span id={`operand-${actualId}`} class="operand-representation"></span>
+		<span id={`operand-${actualId}`} class="operand-representation">
+			<MathJaxNode mathjaxExpression={texVector}/>
+		</span>
 		<label class="operand-controls" for={`edit-mode-${actualId}`}>
 			<input type="checkbox" class="edit-mode" id={`edit-mode-${actualId}`} bind:checked={isEditing}>
 			<span class="edit"><i class="fas fa-pen" aria-hidden="true"></i></span>
 			<span class="done"><i class="fas fa-check" aria-hidden="true"></i></span>
 		</label>
 	</div>
+
+	
 	<div class={`operand-edit-container ${isEditing ? 'operand-edit-container--opened' : ''}`}>
 		<div class="operand-representation">
 			<span class="operand-k">k</span>

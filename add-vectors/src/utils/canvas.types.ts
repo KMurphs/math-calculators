@@ -1,4 +1,4 @@
-export type TCanvasData = {
+export type TCanvasParameters = {
     canvas: any,
     context: any,
     xCenter: number, 
