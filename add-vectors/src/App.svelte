@@ -10,7 +10,7 @@ import VectorCanvas from "./components/VectorCanvas.svelte";
 import { buildOperand, operandToVector, sumOperands } from "./components/Operands.utils";
 import { texFromCartesianVector, texFromPolarVector } from "./utils/mathjax.utils";
 import { toPolar } from "./utils/vector.utils";
-import { getVectorsDrawer as _getVectorsDrawer } from "./utils/canvas.utils";
+import { getBulkVectorsDrawer as _getBulkVectorsDrawer } from "./utils/canvas.utils";
 import type { TOperands } from "./components/Operands.types";
 import type { TCartesianVector } from "./utils/vector.types";
 
@@ -52,7 +52,7 @@ const closeInfoModal = () => isModalVisible = false;
 
 let doUsePolarForm = false;
 /** Canvas Logic */
-$: getDrawerForCurrentRepresentation = _getVectorsDrawer.bind(null, doUsePolarForm);
+$: getDrawerForCurrentRepresentation = _getBulkVectorsDrawer.bind(null, doUsePolarForm);
 /** Tex Logic */
 const _vectorToTex = (usePolarForm: boolean, vector: TCartesianVector) => {
     if(!vector) return "";
@@ -82,7 +82,7 @@ const handleMenuAction = (action: string)=>{
 <main>
 	<div id="results-container" class="debug">
 		<Results vectorToTex={vectorRepresentationToTex} {resultant}  >
-			<VectorCanvas slot="canvas" {vectors} {resultant} getDrawer={getDrawerForCurrentRepresentation}/> 
+			<VectorCanvas slot="canvas" {vectors} {resultant} getBulkDrawer={getDrawerForCurrentRepresentation}/> 
 		</Results>
 	</div>
 	<div id="inputs-container">
@@ -122,6 +122,7 @@ main{
 	margin: 0 auto;
 	padding: 1rem;
 	overflow: auto;
+	width: 100%;
 }
 
 #inputs-container{
@@ -178,6 +179,7 @@ main{
 	#menu-items-container,
 	#inputs-container{
 		max-width: 500px;
+		min-width: 320px;
 	}
 	#menu-items-container{
 		margin: 0 auto;

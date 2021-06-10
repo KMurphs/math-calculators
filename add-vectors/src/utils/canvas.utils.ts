@@ -10,17 +10,17 @@ const DECIMAL_PLACES = 2;
 const formatNumber = (num: number) => num.toFixed(DECIMAL_PLACES);
 
 
-function clearCanvas({canvas, context}: TCanvasParameters){
-    if(!context || !canvas) return;
-    _clearCanvas(context, canvas.width, canvas.height);
+function clearCanvas({node, context}: TCanvasParameters){
+    if(!context || !node) return;
+    _clearCanvas(context, node.width, node.height);
 }
 function _clearCanvas(context: any, canvasWidth: number, canvasHeight: number){
     if(!context) return;
     context.clearRect(0, 0, canvasWidth, canvasHeight);
 }
-function drawCanvasAxis({canvas, context, xCenter, yCenter}: TCanvasParameters){
-    if(!canvas) return;
-    _drawCanvasAxis(context, xCenter, yCenter, canvas.width, canvas.height);
+function drawCanvasAxis({node, context, xCenter, yCenter}: TCanvasParameters){
+    if(!node) return;
+    _drawCanvasAxis(context, xCenter, yCenter, node.width, node.height);
 }
 function _drawCanvasAxis(context: any, xCenter: number, yCenter: number, canvasWidth: number, canvasHeight: number){
     if(!context || !canvasWidth || !canvasHeight) return;
@@ -103,7 +103,7 @@ function drawVector(usePolarForm:boolean, canvasData: TCanvasParameters, xCompon
     const polar = toPolar({x: xComponent, y: yComponent});
     return drawPolarVector(canvasData, polar.radius, polar.degreeAngle, doAddCoords);
 };
-function getVectorsDrawer(usePolarForm: boolean, canvasData: TCanvasParameters){
+function getBulkVectorsDrawer(usePolarForm: boolean, canvasData: TCanvasParameters){
 
     const drawFunction = drawVector.bind(null, usePolarForm);
 
@@ -115,23 +115,24 @@ function getVectorsDrawer(usePolarForm: boolean, canvasData: TCanvasParameters){
         vectorsToDraw.forEach((vector) => drawFunction(canvasData, vector.x, vector.y, true));
         
         canvasData.context.stroke();
+        console.log("Finished drawing");
         // canvasData.context.strokeStyle = strokeNormalColor;
     }
 }
 
 
 const getUnit = (canvasWidth: number, arr: TCartesianVector[])=> (!arr ? 10 : 0.4 * canvasWidth / arr.reduce((acc, item) => Math.max(acc, item.x, item.y), 1));
-const buildCanvasData = (canvasNode: HTMLCanvasElement, unit: number): TCanvasParameters=>({
-    canvas: canvasNode,
+const buildCanvasData = (canvasNode: HTMLCanvasElement, unit: number, dimension: number): TCanvasParameters=>({
+    node: canvasNode,
     context: canvasNode.getContext("2d"),
-    xCenter: canvasNode.width / 2, 
-    yCenter: canvasNode.height / 2,  
+    xCenter: dimension / 2, 
+    yCenter: dimension / 2,  
     xUnit: unit,  
     yUnit: unit
 })
 
 
-export { drawCanvasAxis, clearCanvas, drawCartesianVector, drawPolarVector, getVectorsDrawer, getUnit, buildCanvasData };
+export { drawCanvasAxis, clearCanvas, drawCartesianVector, drawPolarVector, getBulkVectorsDrawer, getUnit, buildCanvasData };
 
 
 

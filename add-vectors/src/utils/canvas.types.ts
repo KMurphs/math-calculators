@@ -1,5 +1,5 @@
 export type TCanvasParameters = {
-    canvas: any,
+    node: HTMLCanvasElement,
     context: any,
     xCenter: number, 
     yCenter: number,  
