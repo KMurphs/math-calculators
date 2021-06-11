@@ -9,10 +9,12 @@ import Results from "./components/Results.svelte";
 import VectorCanvas from "./components/VectorCanvas.svelte";
 import { buildOperand, operandToVector, sumOperands } from "./components/Operands.utils";
 import { texFromCartesianVector, texFromPolarVector } from "./utils/mathjax.utils";
-import { toPolar } from "./utils/vector.utils";
+import { toCartesian, toPolar } from "./utils/vector.utils";
 import { getBulkVectorsDrawer as _getBulkVectorsDrawer } from "./utils/canvas.utils";
-import type { TOperands } from "./components/Operands.types";
+import type { TComponentRepresentationHandlers, TOperands, TRepresentationLabels, TRepresentationValues } from "./components/Operands.types";
 import type { TCartesianVector } from "./utils/vector.types";
+import Input from "./components/Input.svelte";
+import CheckBoxWithIcons from "./components/CheckBoxWithIcons.svelte";
 
 
 let operands: TOperands = [{
@@ -62,7 +64,28 @@ const _vectorToTex = (usePolarForm: boolean, vector: TCartesianVector) => {
     return texFromPolarVector(polar.radius, polar.degreeAngle);
 };
 $: vectorRepresentationToTex = _vectorToTex.bind(null, doUsePolarForm);
-
+/** Operand Editor Logic*/
+const areNumbersAlmostEqual = (num1: number, num2: number, epsilon: number = Number.EPSILON) => num1 && num2 && Math.abs( num1 - num2 ) < epsilon;
+const areNumericObjectsEqual = (obj1: {[key:string]:number}, obj2: {[key:string]:number}, epsilon: number = Number.EPSILON) => Object.keys(obj1).reduce((acc, key) => acc && areNumbersAlmostEqual(obj1[key], obj2[key], epsilon), true);
+const operandComponentsRepresentationProxyHOF = (usePolarForm: boolean): TComponentRepresentationHandlers=>{
+	const cartesianRepresentationLabels: TRepresentationLabels = { multiplier: "multiplier", component1: "x-component", component2: "y-component" }
+	const polarRepresentationLabels: TRepresentationLabels = { multiplier: "multiplier", component1: "polar-length", component2: "polar-angle (degrees)" }
+	return {
+		getComponentsLabels: ()=> usePolarForm ? polarRepresentationLabels : cartesianRepresentationLabels,
+		getComponentsValues: (v: TCartesianVector, multiplier: number): TRepresentationValues=> {
+			console.log("Getting Values");
+			const { radius, degreeAngle } = usePolarForm ? toPolar(v) : { radius: null, degreeAngle: null };
+			return { multiplier, component1: usePolarForm ? radius : v.x, component2: usePolarForm ? degreeAngle : v.y };
+		},
+		setComponentsValue: (newValues: TRepresentationValues, isAddedToPrevious: boolean, index: number)=>{
+			const {x, y}: TCartesianVector = !usePolarForm ? {x: newValues.component1, y: newValues.component2} : toCartesian({radius: newValues.component1, degreeAngle: newValues.component2});
+			const {isAddedToPrevious: sign, ...rest} = operands[index];
+			if(areNumericObjectsEqual({xComponent: x, yComponent: y, scalarMultiplier: newValues.multiplier }, rest as any, 0.001) && sign === isAddedToPrevious) return;
+			operands = operands.map((op, idx) => idx !== index ? op : buildOperand(x, y, newValues.multiplier, isAddedToPrevious));
+		}
+	}
+}
+$: operandEditorProxy = operandComponentsRepresentationProxyHOF(doUsePolarForm);
 
 
 const handleMenuAction = (action: string)=>{
@@ -85,8 +108,10 @@ const handleMenuAction = (action: string)=>{
 			<VectorCanvas slot="canvas" {vectors} {resultant} getBulkDrawer={getDrawerForCurrentRepresentation}/> 
 		</Results>
 	</div>
+
+
 	<div id="inputs-container">
-		<Operands vectorToTex={vectorRepresentationToTex} data={operands}  />
+		<Operands bind:editorProxy={operandEditorProxy} vectorToTex={vectorRepresentationToTex} data={operands}  />
 	</div>
 	<div id="menu-items-container">
 		<MenuBar  bind:usePolarForm={doUsePolarForm} on:selection={e => handleMenuAction(e.detail)}/>

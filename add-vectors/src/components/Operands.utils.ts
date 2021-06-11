@@ -2,9 +2,9 @@ import { addCartesianVectors, scalarCartesianProduct } from "../utils/vector.uti
 import type { TOperand } from "./Operands.types";
 
 
-const buildOperand = (x?: number, y?: number): TOperand => ({
-	isAddedToPrevious: true,
-	scalarMultiplier: 1,
+const buildOperand = (x?: number, y?: number, multiplier: number = 1, isAddedToPrevious: boolean = true): TOperand => ({
+	isAddedToPrevious,
+	scalarMultiplier: multiplier,
 	xComponent: x ? x : 0,
 	yComponent: y ? y : 0
 });

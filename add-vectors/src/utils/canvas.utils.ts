@@ -115,7 +115,7 @@ function getBulkVectorsDrawer(usePolarForm: boolean, canvasData: TCanvasParamete
         vectorsToDraw.forEach((vector) => drawFunction(canvasData, vector.x, vector.y, true));
         
         canvasData.context.stroke();
-        console.log("Finished drawing");
+        // console.log("Finished drawing");
         // canvasData.context.strokeStyle = strokeNormalColor;
     }
 }

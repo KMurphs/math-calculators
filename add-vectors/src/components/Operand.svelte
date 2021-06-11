@@ -5,13 +5,17 @@
 <script lang="ts">
 import MathJaxNode from "./MathJaxNode.svelte";
 import RadioButton from "./RadioButton.svelte";
+import CheckBoxWithIcons from "./CheckBoxWithIcons.svelte";
 import { operandToVector } from "./Operands.utils";
-import type { TOperand } from "./Operands.types";
+import type { TComponentRepresentationHandlers, TOperand, TRepresentationLabels, TRepresentationValues } from "./Operands.types";
+import VectorEditor from "./VectorEditor.svelte";
+import Input from "./Input.svelte";
 
 
 export let id = 0;
 const actualId = `${new Date().getTime()}-${id}`;
 
+export let index = 0;
 
 let operations = ["plus","minus"]
 let operationsIndex = 0;
@@ -24,6 +28,26 @@ export let operand: TOperand;
 $: texVector = `\\(\\overrightarrow{V_${id}}\\) = ` + vectorToTex(operandToVector(operand));
 
 
+
+export let editorProxy: TComponentRepresentationHandlers;
+
+let labels: TRepresentationLabels;
+$: labels = editorProxy.getComponentsLabels();
+
+let vector: TRepresentationValues;
+$: vector = editorProxy.getComponentsValues({x: operand.xComponent, y: operand.yComponent}, operand.scalarMultiplier);
+
+let isAdded: boolean;
+$: isAdded = operand.isAddedToPrevious;
+
+let timerHandler;
+$: {
+	clearTimeout(timerHandler);
+	timerHandler = setTimeout(()=>editorProxy.setComponentsValue(vector, isAdded, index), 200);
+}
+
+
+
 let isEditing = false;
 </script>
 
@@ -33,38 +57,34 @@ let isEditing = false;
 
 <li class={`operand-container ${isEditing ? 'operand-container--opened' : ''}`}>
 	
-	<div class="operand-pre-operation">
-		{#each operations as operation, i (operation)}
-			<RadioButton bind:radioGroup={operationsIndex} value={i} id={i}>
-				<i slot="icon" class={`fas fa-${operation}`} aria-hidden="true"></i>
-				<!-- <span>{operation}</span> -->
-			</RadioButton>
-		{/each}
+	<div class="math-sign">
+		<CheckBoxWithIcons extraClasses={'sign-checkbox'} checked={!isAdded} on:change={ev => isAdded = !(ev.detail)}>
+			<i slot="falseIcon" class="fas fa-plus" aria-hidden="true"></i>
+			<i slot="trueIcon" class="fas fa-minus" aria-hidden="true"></i>
+		</CheckBoxWithIcons>
 	</div>
+	<div class="math-expression">
+		<MathJaxNode mathjaxExpression={texVector}/>
+	</div>
+	<label for={`edit-mode-${actualId}`} class="edit-controls">
+		<input type="checkbox" class="edit-mode" id={`edit-mode-${actualId}`} bind:checked={isEditing}>
+		<span class="edit"><i class="fas fa-pen" aria-hidden="true"></i></span>
+		<span class="done"><i class="fas fa-check" aria-hidden="true"></i></span>
+	</label>
 
 
-	<div class="operand-expression-container">
-		<span id={`operand-${actualId}`} class="operand-representation">
-			<MathJaxNode mathjaxExpression={texVector}/>
-		</span>
-		<label class="operand-controls" for={`edit-mode-${actualId}`}>
-			<input type="checkbox" class="edit-mode" id={`edit-mode-${actualId}`} bind:checked={isEditing}>
-			<span class="edit"><i class="fas fa-pen" aria-hidden="true"></i></span>
-			<span class="done"><i class="fas fa-check" aria-hidden="true"></i></span>
-		</label>
+	<div class="collapsable">
 	</div>
+	<div class="math-components collapsable">
+		<VectorEditor {labels} {vector} on:change={ev => vector = ev.detail}/>
+	</div>
+	<div class="other-controls collapsable">
+		<span class="edit"><i class="fas fa-pen" aria-hidden="true"></i></span>
+	</div>
+
 
 	
-	<div class={`operand-edit-container ${isEditing ? 'operand-edit-container--opened' : ''}`}>
-		<div class="operand-representation">
-			<span class="operand-k">k</span>
-			<span class="operand-x">x</span>
-			<span class="operand-y">y</span>
-		</div>
-		<div class="operand-controls">
-			<span><strong>1</strong></span>
-		</div>
-	</div>
+
 
 </li>
 
@@ -72,59 +92,30 @@ let isEditing = false;
 <style>
 .operand-container{
 	display: grid;
-	grid-template: auto 1fr / auto 1fr;
+	grid-template: 2rem auto / 2rem 1fr 2rem;
 	overflow-y: hidden;
+	grid-gap: 0 .5rem;
 }
-.operand-container--opened{
-	border-bottom: 1px solid #ddd;
-	margin-bottom: .5rem;
+:global(.sign-checkbox){
+	transform: scale(.8);
+    --true-font-color: #cf5050 !important;
+    --true-focus-color: #ebc2c280 !important;
+    --true-border-color: #ffdada !important;
 }
-.operand-expression-container{
-	grid-area: 1 / 2 / 2 / 3;
+.math-sign,
+.edit-controls,
+.other-controls{
 	display: flex;
+	justify-content: center;
 	align-items: baseline;
 }
-.operand-edit-container{
-	grid-area: 2 / 2 / 3 / 3;
+.math-expression{
+	padding-left: .5rem;
 	display: flex;
-	margin-top: .5rem;
-	transition: all .3s;
-	opacity: 0;
-	overflow-y: hidden;
-	height: 0;
-	/* margin-top: -100rem; */
-	/* z-index: -1; */
+	align-items: end;
 }
-.operand-edit-container--opened{
-	opacity: 1;
-	height: 5rem;
-	/* margin-top: 0.5rem; */
-	/* z-index: 0; */
-}
-.operand-pre-operation{
-	display: flex;
-	margin-right: 1rem;
-	margin-left: .2rem;
-	align-self: end;
-	opacity: .1;
-}
-.operand-container--opened .operand-pre-operation,
-.operand-pre-operation:hover,
-.operand-pre-operation:focus{
-	opacity: 1;
-}
-:global(.operand-pre-operation .radio-custom-container){
-	margin-right: 2px;
-}
-.operand-representation{
-	flex: 1 1 2rem;
-}
-.operand-controls{
-	flex: 0 0 2rem;
-	display: flex;
-	flex-direction: column;
-}
-.operand-controls span{
+.edit-controls span,
+.other-controls span{
 	display: inline-flex;
 	justify-content: center;
 	align-items: center;
@@ -135,37 +126,14 @@ let isEditing = false;
 	cursor: pointer;
 	/* background-color: #eee; */
 }
-.operand-controls span:hover{
-	color: #555;
-	background-color: #eee;
+.math-components{
+	padding: 1rem .5rem;
 }
-.operand-controls span:active{
-	color: #eee;
-	background-color: #ddd;
+.other-controls{
+	padding: 1rem 0;
 }
-.operand-controls span:focus{
-	box-shadow: 0 0 0 2px rgba(23, 133, 255, 0.5);
-}
-.operand-edit-container .operand-controls span{
-	margin-bottom: .5rem;
-	color: #555;
-	background-color: #eee;
-}
-.operand-edit-container .operand-controls span:hover{
-	color: #555;
-	background-color: #ddd;
-}
-.operand-edit-container .operand-controls span:active{
-	color: #eee;
-	background-color: #999;
-}
-input[type="checkbox"].edit-mode:checked ~ .done{
-	color: #eee;
-	background-color: #777;
-}
-input[type="checkbox"].edit-mode:checked ~ .done:hover{
-	background-color: #555;
-}
+
+
 
 input[type="checkbox"].edit-mode{
 	position: absolute;

@@ -1,6 +1,6 @@
 
 <script lang="ts">
-import CheckBox from "./CheckBox.svelte";
+import CheckBox from "./CheckBoxToggleSwitch.svelte";
 export let usePolarForm = false;
 
 import { createEventDispatcher } from 'svelte';
