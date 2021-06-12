@@ -3,52 +3,54 @@
 
 
 <script lang="ts">
+import { onMount } from "svelte";
 import MathJaxNode from "./MathJaxNode.svelte";
-import RadioButton from "./RadioButton.svelte";
 import CheckBoxWithIcons from "./CheckBoxWithIcons.svelte";
+import VectorEditor from "./VectorEditor.svelte";
 import { operandToVector } from "./Operands.utils";
 import type { TComponentRepresentationHandlers, TOperand, TRepresentationLabels, TRepresentationValues } from "./Operands.types";
-import VectorEditor from "./VectorEditor.svelte";
-import Input from "./Input.svelte";
+
 
 
 export let id = 0;
 const actualId = `${new Date().getTime()}-${id}`;
 
-export let index = 0;
 
-let operations = ["plus","minus"]
-let operationsIndex = 0;
-let addToPrevious = true;
-$: addToPrevious = operationsIndex == 0;
-
-
-export let vectorToTex: Function;
-export let operand: TOperand;
-$: texVector = `\\(\\overrightarrow{V_${id}}\\) = ` + vectorToTex(operandToVector(operand));
-
-
-
-export let editorProxy: TComponentRepresentationHandlers;
-
-let labels: TRepresentationLabels;
-$: labels = editorProxy.getComponentsLabels();
-
-let vector: TRepresentationValues;
-$: vector = editorProxy.getComponentsValues({x: operand.xComponent, y: operand.yComponent}, operand.scalarMultiplier);
-
+export let operand: TOperand = null;
 let isAdded: boolean;
 $: isAdded = operand.isAddedToPrevious;
+
+export let vectorToTex: Function = null;
+$: texVector = vectorToTex(operandToVector(operand));
+
+
+
+
+
+
+export let editorProxy: TComponentRepresentationHandlers = null;
+export let index = 0;
+
+let labels: TRepresentationLabels
+$: labels = editorProxy.getLabels();
+let vector: TRepresentationValues 
+$: vector = editorProxy.getComponent(index);;
 
 let timerHandler;
 $: {
 	clearTimeout(timerHandler);
-	timerHandler = setTimeout(()=>editorProxy.setComponentsValue(vector, isAdded, index), 200);
+	// console.log(vector)
+	timerHandler = setTimeout(()=>editorProxy.setComponent(vector, isAdded, index), 200);
 }
+
+const handleDelete = ()=>editorProxy.deleteComponent(index);
+const handleToUnitVector = ()=>editorProxy.toUnitVector(index);
 
 
 
 let isEditing = false;
+
+
 </script>
 
 
@@ -64,10 +66,11 @@ let isEditing = false;
 		</CheckBoxWithIcons>
 	</div>
 	<div class="math-expression">
-		<MathJaxNode mathjaxExpression={texVector}/>
+		<MathJaxNode mathjaxExpression={`<span class="vector-name ${isEditing? '' : 'muted-text'}">\\(\\overrightarrow{V_{${id}}}\\) = </span>` + texVector}/>
 	</div>
+
+	<input type="checkbox" class="edit-mode" id={`edit-mode-${actualId}`} bind:checked={isEditing}>
 	<label for={`edit-mode-${actualId}`} class="edit-controls">
-		<input type="checkbox" class="edit-mode" id={`edit-mode-${actualId}`} bind:checked={isEditing}>
 		<span class="edit"><i class="fas fa-pen" aria-hidden="true"></i></span>
 		<span class="done"><i class="fas fa-check" aria-hidden="true"></i></span>
 	</label>
@@ -79,7 +82,8 @@ let isEditing = false;
 		<VectorEditor {labels} {vector} on:change={ev => vector = ev.detail}/>
 	</div>
 	<div class="other-controls collapsable">
-		<span class="edit"><i class="fas fa-pen" aria-hidden="true"></i></span>
+		<span class="edit" on:click={handleDelete}><i class="fas fa-trash" aria-hidden="true"></i></span>
+		<span class="edit" on:click={handleToUnitVector}><i class="fas fa-pen" aria-hidden="true"></i></span>
 	</div>
 
 
@@ -95,6 +99,7 @@ let isEditing = false;
 	grid-template: 2rem auto / 2rem 1fr 2rem;
 	overflow-y: hidden;
 	grid-gap: 0 .5rem;
+	margin-bottom: 1rem;
 }
 :global(.sign-checkbox){
 	transform: scale(.8);
@@ -102,6 +107,7 @@ let isEditing = false;
     --true-focus-color: #ebc2c280 !important;
     --true-border-color: #ffdada !important;
 }
+
 .math-sign,
 .edit-controls,
 .other-controls{
@@ -128,9 +134,12 @@ let isEditing = false;
 }
 .math-components{
 	padding: 1rem .5rem;
+	padding-left: 2.5rem;
 }
 .other-controls{
 	padding: 1rem 0;
+	flex-direction: column;
+	justify-content: flex-start;
 }
 
 
@@ -138,12 +147,22 @@ let isEditing = false;
 input[type="checkbox"].edit-mode{
 	position: absolute;
 	left: -10000px;
+	top: 0;
 	overflow: hidden;
 	width: 1px;
 	height: 1px;
 }
-input[type="checkbox"].edit-mode ~ .edit{ display: inline-flex; }
-input[type="checkbox"].edit-mode ~ .done{ display: none; }
-input[type="checkbox"].edit-mode:checked ~ .edit{ display: none; }
-input[type="checkbox"].edit-mode:checked ~ .done{ display: inline-flex; }
+input[type="checkbox"].edit-mode ~ label .edit{ display: inline-flex; }
+input[type="checkbox"].edit-mode ~ label .done{ display: none; }
+input[type="checkbox"].edit-mode:checked ~ label .edit{ display: none; }
+input[type="checkbox"].edit-mode:checked ~ label .done{ display: inline-flex; }
+
+
+
+.collapsable{ transition: all .2s;  }
+input[type="checkbox"].edit-mode:not(:checked) ~ .collapsable{ height: 0; overflow: hidden; padding-top: 0; padding-bottom: 0; } 
+/* input[type="checkbox"].edit-mode:checked ~ .collapsable{ height: auto; } */
+
+:global(.operand-container .muted-text){ color: #ddd;}
+:global(.operand-container .vector-name){ margin-right: .5rem; }
 </style>

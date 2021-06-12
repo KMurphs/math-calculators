@@ -52,13 +52,15 @@ const onReset = ()=>onSelection("reset");
 	align-items: center;
 }
 .menu-item:focus{
-	outline: 2px solid #aaa;
+	border-top: 2px solid #aaa;
 	/* border-top: 2px solid #aaa; */
 }
 .menu-item:hover,
 .menu-item:active {
   background-color: #ddd;
   border-color: #ddd;
+  background-color: rgba(0,0,0,0.1);
+  border-color: rgba(0,0,0,0.1);
   /* color: #eee; */
 }
 button.menu-item{

@@ -12,9 +12,11 @@ export type TRepresentationValues = { multiplier: number, component1: number, co
 export type TComponentsValueSetter = (newValues: TRepresentationValues, isAddedToPrevious: boolean, indexToUpdate: number)=>void 
 export type TComponentsValueGetter = (vector: TCartesianVector, multiplier: number) => TRepresentationValues
 export type TComponentRepresentationHandlers = { 
-	getComponentsLabels: ()=>TRepresentationLabels, 
-	setComponentsValue: TComponentsValueSetter,
-	getComponentsValues: (v: TCartesianVector, multiplier: number) => TRepresentationValues
+	getLabels: ()=>TRepresentationLabels, 
+	setComponent: TComponentsValueSetter,
+	getComponent: (index: number) => TRepresentationValues,
+	deleteComponent: (index: number) => void
+	toUnitVector: (index: number) => void
 }
 export type TOperands = TOperand[];
 

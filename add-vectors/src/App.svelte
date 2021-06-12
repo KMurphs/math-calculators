@@ -7,38 +7,39 @@ import MenuBar from "./components/MenuBar.svelte";
 import Operands from "./components/Operands.svelte";
 import Results from "./components/Results.svelte";
 import VectorCanvas from "./components/VectorCanvas.svelte";
-import { buildOperand, operandComponentsRepresentationProxyHOF, operandToVector, sumOperands } from "./components/Operands.utils";
+import { buildOperand, operandEditorProxyHOF, operandToVector, sumOperands } from "./components/Operands.utils";
 import { texFromCartesianVector, texFromPolarVector } from "./utils/mathjax.utils";
-import { toCartesian, toPolar } from "./utils/vector.utils";
+import { toPolar } from "./utils/vector.utils";
 import { getBulkVectorsDrawer as _getBulkVectorsDrawer } from "./utils/canvas.utils";
-import type { TComponentRepresentationHandlers, TOperands, TRepresentationLabels, TRepresentationValues } from "./components/Operands.types";
+import type { TOperands} from "./components/Operands.types";
 import type { TCartesianVector } from "./utils/vector.types";
-import Input from "./components/Input.svelte";
-import CheckBoxWithIcons from "./components/CheckBoxWithIcons.svelte";
-import { areNumericObjectsEqual } from "./utils/math.utils";
+import { tick } from "svelte";
 
 
-let operands: TOperands = [{
-    isAddedToPrevious: true,
-	scalarMultiplier: 1,
-	xComponent: 1.235,
-	yComponent: 12.345
-},{
-    isAddedToPrevious: true,
-	scalarMultiplier: 1,
-	xComponent: 1.235,
-	yComponent: 12.345
-},{
-    isAddedToPrevious: true,
-	scalarMultiplier: 1,
-	xComponent: 1.235,
-	yComponent: 12.345
-},{
-    isAddedToPrevious: true,
-	scalarMultiplier: 1,
-	xComponent: 1.235,
-	yComponent: 12.345
-}];
+
+let operands: TOperands = [
+// {
+//     isAddedToPrevious: true,
+// 	scalarMultiplier: 1,
+// 	xComponent: 1.235,
+// 	yComponent: 12.345
+// },{
+//     isAddedToPrevious: true,
+// 	scalarMultiplier: 1,
+// 	xComponent: 1.235,
+// 	yComponent: 12.345
+// },{
+//     isAddedToPrevious: true,
+// 	scalarMultiplier: 1,
+// 	xComponent: 1.235,
+// 	yComponent: 12.345
+// },{
+//     isAddedToPrevious: true,
+// 	scalarMultiplier: 1,
+// 	xComponent: 1.235,
+// 	yComponent: 12.345
+// }
+];
 $: vectors = operands.map(operandToVector);
 
 
@@ -59,28 +60,32 @@ let doUsePolarForm = false;
 $: getDrawerForCurrentRepresentation = _getBulkVectorsDrawer.bind(null, doUsePolarForm);
 
 /** Tex Logic */
-const _vectorToTex = (usePolarForm: boolean, vector: TCartesianVector) => {
+const vectorToTex = (usePolarForm: boolean, vector: TCartesianVector) => {
     if(!vector) return "";
 
 	if(!usePolarForm) return texFromCartesianVector(vector.x, vector.y);
-    const polar = toPolar({x: vector.x, y: vector.y});
+    
+	const polar = toPolar(vector);
     return texFromPolarVector(polar.radius, polar.degreeAngle);
 };
-$: vectorRepresentationToTex = _vectorToTex.bind(null, doUsePolarForm);
+$: vectorRepresentationToTex = vectorToTex.bind(null, doUsePolarForm);
 
 /** Operand Editor Logic*/
-$: operandEditorProxy = operandComponentsRepresentationProxyHOF(
+$: operandEditorProxy = operandEditorProxyHOF(
 	doUsePolarForm, 
-	index => operands[index], 
-	(newOperandValue, newOperandIndex) => operands = operands.map((op, idx) => idx !== newOperandIndex ? op : newOperandValue)
+	indexToGet => operands[indexToGet], 
+	(newOperandValue, newOperandIndex) => operands = operands.map((op, idx) => idx !== newOperandIndex ? op : newOperandValue),
+	indexToDelete =>  operands = operands.filter((op, idx) => idx !== indexToDelete)
 );
 
 
+const scrollToBottom = (node: HTMLElement) => node.scrollTo(0, node.scrollHeight);
 
+let operandsContainer: HTMLElement = null;
 const handleMenuAction = (action: string)=>{
 	if(action == 'reset') { operands = []; resultant = {x: 0, y: 0}; return; }
 	if(action == 'new-session') { operands = [buildOperand(resultant.x, resultant.y)]; resultant = {x: 0, y: 0};  return; }
-	if(action == 'new-operand') { operands = [...operands, buildOperand()]; resultant = {x: 0, y: 0};  return; }
+	if(action == 'new-operand') { operands = [...operands, buildOperand()]; resultant = {x: 0, y: 0}; tick().then(()=> scrollToBottom(operandsContainer)); return; }
 }
 </script>
 
@@ -99,8 +104,8 @@ const handleMenuAction = (action: string)=>{
 	</div>
 
 
-	<div id="inputs-container">
-		<Operands bind:editorProxy={operandEditorProxy} vectorToTex={vectorRepresentationToTex} data={operands}  />
+	<div id="inputs-container" bind:this={operandsContainer}>
+		<Operands bind:editorProxy={operandEditorProxy} vectorToTex={vectorRepresentationToTex} data={operands} on:newOperand={()=>handleMenuAction("new-operand")} />
 	</div>
 	<div id="menu-items-container">
 		<MenuBar  bind:usePolarForm={doUsePolarForm} on:selection={e => handleMenuAction(e.detail)}/>

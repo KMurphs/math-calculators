@@ -23,7 +23,7 @@ onMount(setupCanvas);
 window.addEventListener('resize', setupCanvas);
 
 
-// $: canvas && vectors && getBulkDrawer && console.log("Re-rendering canvas", canvas, canvas.node?.parentElement.clientWidth);
+$: canvas && vectors && getBulkDrawer && setupCanvas();
 $: canvas && vectors && getBulkDrawer && tick().then(() => { clearCanvas(canvas); drawCanvasAxis(canvas) });
 $: canvas && vectors && tick().then(() => { getBulkDrawer(canvas)(vectors, "#000"); getBulkDrawer(canvas)([resultant], "#F00"); });
 </script>
