@@ -52,15 +52,17 @@ h1{
 .icon{
     width: 2.2rem;
     height: 2.2rem;
-    background: #eee;
+    /* background: #eee; */
+    background-color: var(--color-secondary-dark);
     display: inline-flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     padding-left: 0.2rem;
     margin-right: 1rem;
     color: #333;
+    color: var(--color-secondary-light);
 }
 .btn-info{
     font-size: .8rem;
@@ -69,6 +71,7 @@ h1{
     border: none;
     background: rgba(0,0,0,.1);
     color: #999;
+    color: var(--color-secondary);
     border-radius: 50%;
     display: flex;
     justify-content: center;

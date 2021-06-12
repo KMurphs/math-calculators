@@ -3,12 +3,12 @@
 
 
 <script lang="ts">
-import { onMount } from "svelte";
 import MathJaxNode from "./MathJaxNode.svelte";
 import CheckBoxWithIcons from "./CheckBoxWithIcons.svelte";
 import VectorEditor from "./VectorEditor.svelte";
 import { operandToVector } from "./Operands.utils";
 import type { TComponentRepresentationHandlers, TOperand, TRepresentationLabels, TRepresentationValues } from "./Operands.types";
+import { afterUpdate, tick } from "svelte";
 
 
 
@@ -36,10 +36,10 @@ $: labels = editorProxy.getLabels();
 let vector: TRepresentationValues 
 $: vector = editorProxy.getComponent(index);;
 
+/** Logic to allow updating of local changes to vctor in batch*/
 let timerHandler;
 $: {
 	clearTimeout(timerHandler);
-	// console.log(vector)
 	timerHandler = setTimeout(()=>editorProxy.setComponent(vector, isAdded, index), 200);
 }
 
@@ -49,6 +49,8 @@ const handleToUnitVector = ()=>editorProxy.toUnitVector(index);
 
 
 let isEditing = false;
+let containerNode: HTMLElement;
+afterUpdate(()=>isEditing && containerNode && containerNode.scrollIntoView());
 
 
 </script>
@@ -57,7 +59,7 @@ let isEditing = false;
 
 
 
-<li class={`operand-container ${isEditing ? 'operand-container--opened' : ''}`}>
+<li class={`operand-container ${isEditing ? 'operand-container--opened' : ''}`} bind:this={containerNode}>
 	
 	<div class="math-sign">
 		<CheckBoxWithIcons extraClasses={'sign-checkbox'} checked={!isAdded} on:change={ev => isAdded = !(ev.detail)}>
@@ -106,6 +108,7 @@ let isEditing = false;
     --true-font-color: #cf5050 !important;
     --true-focus-color: #ebc2c280 !important;
     --true-border-color: #ffdada !important;
+    --false-border-color: rgba(0,0,0,0.1) !important;
 }
 
 .math-sign,
@@ -129,8 +132,22 @@ let isEditing = false;
 	height: 2rem;
 	border-radius: 50%;
 	color: #ddd;
+	color: var(--color-accent);
 	cursor: pointer;
 	/* background-color: #eee; */
+}
+.edit-controls span:hover,
+.other-controls span:hover{
+	background: rgba(0,0,0,.05);
+}
+.edit-controls span:focus,
+.other-controls span:focus{
+	background: rgba(0,0,0,.1);
+}
+.edit-controls span:active,
+.other-controls span:active{
+	background: var(--color-accent);
+	color: var(--color-primary-light);
 }
 .math-components{
 	padding: 1rem .5rem;
@@ -140,6 +157,10 @@ let isEditing = false;
 	padding: 1rem 0;
 	flex-direction: column;
 	justify-content: flex-start;
+}
+.other-controls span{
+	border: 1px solid rgba(0,0,0,0.1);
+	margin-bottom: .5rem;
 }
 
 
@@ -155,7 +176,7 @@ input[type="checkbox"].edit-mode{
 input[type="checkbox"].edit-mode ~ label .edit{ display: inline-flex; }
 input[type="checkbox"].edit-mode ~ label .done{ display: none; }
 input[type="checkbox"].edit-mode:checked ~ label .edit{ display: none; }
-input[type="checkbox"].edit-mode:checked ~ label .done{ display: inline-flex; }
+input[type="checkbox"].edit-mode:checked ~ label .done{ display: inline-flex; background: var(--color-accent-lighter); }
 
 
 
@@ -163,6 +184,6 @@ input[type="checkbox"].edit-mode:checked ~ label .done{ display: inline-flex; }
 input[type="checkbox"].edit-mode:not(:checked) ~ .collapsable{ height: 0; overflow: hidden; padding-top: 0; padding-bottom: 0; } 
 /* input[type="checkbox"].edit-mode:checked ~ .collapsable{ height: auto; } */
 
-:global(.operand-container .muted-text){ color: #ddd;}
+:global(.operand-container .muted-text){ color: var(--color-primary-light2);}
 :global(.operand-container .vector-name){ margin-right: .5rem; }
 </style>

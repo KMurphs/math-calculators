@@ -67,6 +67,7 @@ label::after{
   content: "";
   height: 1px;
   background-color: #bbb;
+  background-color: var(--color-secondary-dark);
   display: block;
   position: absolute;
   transition:0.2s ease all; 
@@ -76,6 +77,7 @@ label::after{
 label::after	{
   transform: scaleX(0);
   background-color: #777;
+  background-color: var(--color-secondary);
 }
 /* active state */
 /* input:focus ~ label, input:valid ~ label 		{ */
@@ -106,15 +108,15 @@ input:focus ~ .highlight {
 
 /* ANIMATIONS ================ */
 @-webkit-keyframes inputHighlighter {
-	from { background:#5264AE; }
+	from { background: var(--color-accent-dark);  }
   to 	{ width:0; background:transparent; }
 }
 @-moz-keyframes inputHighlighter {
-	from { background:#5264AE; }
+	from { background: var(--color-accent-dark);; }
   to 	{ width:0; background:transparent; }
 }
 @keyframes inputHighlighter {
-	from { background:#5264AE; }
+	from { background: var(--color-accent-dark);; }
   to 	{ width:0; background:transparent; }
 }
 </style>

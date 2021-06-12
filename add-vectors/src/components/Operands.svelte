@@ -22,7 +22,7 @@ const onNewOperand = ()=>dispatch("newOperand");
     </ul>
 {:else}
     <div class="empty-state" on:click={onNewOperand}> 
-        <span class="empty-message">Oups there doesn't seem to be anything to add yet.</span>    
+        <span class="empty-message">Oups! There doesn't seem to be anything to add yet.</span>    
         <span class="empty-icon"><i class="fas fa-plus" aria-hidden="true"></i></span> 
         <span class="empty-message">Click here to get started!</span>    
     </div>
@@ -38,18 +38,23 @@ const onNewOperand = ()=>dispatch("newOperand");
 
 .empty-state{
     border: 1px solid #61bf9e;
+    border-color: var(--color-accent);
     padding: 1rem;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     background: #dffff4;
+    background: var(--color-accent-lighter3);
     flex-direction: column;
     color: #125d42;
+    color: var(--color-accent-dark);
+    border-radius: 8px;
     cursor: pointer;
 }
 .empty-state:hover{
     background: #c7fbe9;
+    background: var(--color-accent-lighter);
 }
 .empty-message{
     display: block;

@@ -68,6 +68,7 @@ const closeModal = () => dispatch('close');
 	opacity: 0;
 	background: rgba(143,27,15,0.8);
 	background: rgba(113, 113, 113, 0.8);
+	background: var(--color-secondary);
 	-webkit-transition: all 0.3s;
 	-moz-transition: all 0.3s;
 	transition: all 0.3s;
@@ -82,8 +83,10 @@ const closeModal = () => dispatch('close');
 .md-content {
 	color: #fff;
 	color: #333;
+	color: var(--color-primary-dark);
 	background: #e74c3c;
 	background: #dedede;
+	background: var(--color-primary-light);
 	position: relative;
 	border-radius: 3px;
 	margin: 0 auto;
@@ -129,6 +132,7 @@ const closeModal = () => dispatch('close');
 .md-show.md-effect-12 ~ .md-overlay {
 	background: #e74c3c;
 	background: #dedede;
+	background: var(--color-secondary-lighter);
 } 
 
 .md-effect-12 .md-content h3,
@@ -148,7 +152,10 @@ const closeModal = () => dispatch('close');
 	border-radius: 8px;
 	min-width: 15rem;
 	background: #333;
+	background: var(--color-secondary-dark);
 	color: #eee;
+	color: var(--color-primary-light);
+	font-weight: bold;
 }
 .md-close{
 	margin-top: 5rem !important;

@@ -22,10 +22,14 @@ const setupCanvas = () => {
 onMount(setupCanvas);
 window.addEventListener('resize', setupCanvas);
 
-
+const operandsCanvasColor = "#333";
+const resultantCanvasColor = "#b1289a";
 $: canvas && vectors && getBulkDrawer && setupCanvas();
 $: canvas && vectors && getBulkDrawer && tick().then(() => { clearCanvas(canvas); drawCanvasAxis(canvas) });
-$: canvas && vectors && tick().then(() => { getBulkDrawer(canvas)(vectors, "#000"); getBulkDrawer(canvas)([resultant], "#F00"); });
+$: canvas && vectors && tick().then(() => { 
+	getBulkDrawer(canvas)(vectors, operandsCanvasColor); 
+	getBulkDrawer(canvas)([resultant], resultantCanvasColor); 
+});
 </script>
 
 
@@ -40,7 +44,7 @@ canvas{
 	max-width: 100%; 
 	width: 100%; 
 	margin: 0 auto; 
-	background: #eee; 
+	/* background: #eee;  */
 	display: block;
 	margin-bottom: .5rem;
 }

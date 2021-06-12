@@ -39,6 +39,8 @@ const onReset = ()=>onSelection("reset");
 	display: flex;
 	justify-content: space-between;
 	background: #f5f5f5;
+	background: var(--color-secondary-dark);
+	color: var(--color-primary-light);
 	overflow-y: hidden;
 }
 .menu-item{
@@ -53,19 +55,22 @@ const onReset = ()=>onSelection("reset");
 }
 .menu-item:focus{
 	border-top: 2px solid #aaa;
+	border-top: 4px solid var(--color-secondary);
 	/* border-top: 2px solid #aaa; */
 }
 .menu-item:hover,
 .menu-item:active {
   background-color: #ddd;
-  border-color: #ddd;
-  background-color: rgba(0,0,0,0.1);
-  border-color: rgba(0,0,0,0.1);
+  /* border-color: #ddd; */
+  background-color: rgba(0,0,0,0.2);
+  /* background-color: rgba(199, 251, 233,0.1); */
+  /* border-color: rgba(0,0,0,0.1); */
   /* color: #eee; */
 }
 button.menu-item{
 	font-size: 1.2rem;
 	width: 50px;
+	color: var(--color-primary-light);
 }
 button.menu-item span{
 	display: none;

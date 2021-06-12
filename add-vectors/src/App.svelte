@@ -123,10 +123,29 @@ const handleMenuAction = (action: string)=>{
 
 
 <style>
+:global(:root){
+	--color-primary-lighter: #fafafa;
+	--color-primary-light: #eee;
+	--color-primary-light2: #ccc;
+	--color-primary-gray: #999;
+	--color-primary-dark: #333;
+	--color-secondary-lighter: #d9f6ff;
+	--color-secondary-light: #a3eaff;
+	--color-secondary: #24a5cc;
+	--color-secondary-dark: #00617F;
+	--color-accent-lighter: #ffdbf9;
+	--color-accent-lighter3: #fff5fd;
+	--color-accent-lighter2: #ffc5f5;
+	--color-accent-light: #fdbcf2;
+	--color-accent: #b1289a;
+	--color-accent-dark: #5A0B4D;
+}
 header{
 	padding: .5rem 1rem;
 	background: #333;
+	background: var(--color-secondary-dark);
 	color: #eee;
+	color: var(--color-secondary-light);
 }
 
 main{
@@ -148,6 +167,7 @@ main{
 	padding: 1rem;
 	flex: 1 1 2rem;
 	background: #fafafa;
+	background: var(--color-primary-lighter);
 	overflow-y: auto;
 }
 
@@ -160,6 +180,7 @@ main{
 
 #menu-items-container{
 	background: #f5f5f5;
+	background: var(--color-secondary-dark);
 	padding: 0 1rem;
 }
 

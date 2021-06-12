@@ -51,7 +51,10 @@ function addCoordinates(context: any, text: string, xCoord: number, yCoord: numb
     const margin = 12;
     context.font = `${margin - 2}px Arial`;
     context.textAlign = "center";
+    context.textAlign = isInRightPlane ? "right" : "left";
     context.fillText(text, xCoord + margin * (isInUpPlane ? 1 : -1), yCoord + margin * (isInRightPlane ? 1 : -1)); 
+    // context.fillText(text, xCoord + margin * (isInRightPlane ? -1 : 1), yCoord + margin * (isInUpPlane ? 1 : -1)); 
+
 }
 function drawCanvasArrow(context: any, fromx: number, fromy: number, tox: number, toy: number) {
     if(!context || !fromx || !fromy || !tox || !toy) return;
