@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "rollup -c",
+    "deploy": "(del /s /q app\\* || cd) && (rmdir /s /q app || cd) && npm run build && (robocopy public app /MIR || cd) && cd app && git init && git add . && git commit -m \"Initial commit\" && git remote add origin https://github.com/KMurphs/math-calculators.git && git push --force origin main:gh-pages",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
     "check": "svelte-check --tsconfig ./tsconfig.json"
