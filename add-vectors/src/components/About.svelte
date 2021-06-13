@@ -1,10 +1,11 @@
 
 <p class="about-title">
-	"Add Vectors" Application written by Stephan K.<br>
+	<strong>"Add Vectors"</strong> Application written by Stephan K.<br>
+	The application can be used to perform addition and substraction of 2D (2 dimensional) vectors. It allows both cartesian and polar representations.
 </p>
 <p class="about-links">
-	To get in touch, find me on Twitter 
-	<strong><a href="https://twitter.com/Murphs_K" rel="noopener noreferrer" target="_blank">@Murphs_K</a></strong>, 
+	Got a question? To get in touch, find me on Twitter 
+	<strong><a href="https://twitter.com/Murphs_K" rel="noopener noreferrer" target="_blank">@Murphs_K</a></strong>, or
 	on Github 
 	<strong><a href="https://github.com/KMurphs" rel="noopener noreferrer" target="_blank">KMurphs</a></strong><br>
 </p>
@@ -13,3 +14,8 @@
 </p>
 
 
+<style>
+.about-links{
+	margin: 1rem 0;
+}
+</style>

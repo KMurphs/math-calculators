@@ -21,6 +21,6 @@ export let vectorToTex: (v: TCartesianVector) => string = null;
 #resultant{
 	margin: 0 auto;
     text-align: center;
-    color: var(--color-accent-dark);
+    color: var(--color-secondary-dark);
 }
 </style>

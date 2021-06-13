@@ -52,7 +52,7 @@ function addCoordinates(context: any, text: string, xCoord: number, yCoord: numb
     context.font = `${margin - 2}px Arial`;
     context.textAlign = "center";
     context.textAlign = isInRightPlane ? "right" : "left";
-    context.fillText(text, xCoord + margin * (isInUpPlane ? 1 : -1), yCoord + margin * (isInRightPlane ? 1 : -1)); 
+    context.fillText(text, xCoord + margin * (isInRightPlane ? 1 : -1), yCoord + margin * (isInUpPlane ? 1 : -1)); 
     // context.fillText(text, xCoord + margin * (isInRightPlane ? -1 : 1), yCoord + margin * (isInUpPlane ? 1 : -1)); 
 
 }
@@ -86,7 +86,7 @@ function drawPolarVector(canvasData: TCanvasParameters, length: number, degreeAn
 function drawCartesianVector(canvasData: TCanvasParameters, xComponent: number, yComponent: number, doAddCoords = false, label?: string){
     if(xComponent == 0 && yComponent == 0) return;
     drawCanvasArrow(canvasData.context, canvasData.xCenter, canvasData.yCenter, canvasData.xCenter + canvasData.xUnit * xComponent, canvasData.yCenter - canvasData.yUnit * yComponent);
-    if(doAddCoords) addCoordinates(canvasData.context, label ? label : `(${formatNumber(xComponent)}, ${formatNumber(yComponent)})`, canvasData.xCenter + canvasData.xUnit * xComponent, canvasData.yCenter - canvasData.yUnit * yComponent, xComponent > 0, yComponent < 0);
+    if(doAddCoords) addCoordinates(canvasData.context, label ? label : `(${formatNumber(xComponent)}, ${formatNumber(yComponent)})`, canvasData.xCenter + canvasData.xUnit * xComponent, canvasData.yCenter - canvasData.yUnit * yComponent, yComponent < 0, xComponent > 0);
 }
 // function drawVectors(canvasData: TCanvasParameters, cartesianVectors: TCartesianVector[], polarVectors: TPolarVector[], willDrawResultant = false){
 //     if(!canvasData.canvas || !canvasData.context) return;
@@ -124,7 +124,7 @@ function getBulkVectorsDrawer(usePolarForm: boolean, canvasData: TCanvasParamete
 }
 
 
-const getUnit = (canvasWidth: number, arr: TCartesianVector[])=> (!arr ? 10 : 0.4 * canvasWidth / arr.reduce((acc, item) => Math.max(acc, item.x, item.y), 1));
+const getUnit = (canvasWidth: number, arr: TCartesianVector[])=> (!arr ? 10 : 0.4 * (canvasWidth || 300) / arr.reduce((acc, item) => Math.max(acc, item.x, item.y), 1));
 const buildCanvasData = (canvasNode: HTMLCanvasElement, unit: number, dimension: number): TCanvasParameters=>({
     node: canvasNode,
     context: canvasNode.getContext("2d"),

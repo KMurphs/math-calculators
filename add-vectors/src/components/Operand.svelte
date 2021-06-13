@@ -50,7 +50,7 @@ const handleToUnitVector = ()=>editorProxy.toUnitVector(index);
 
 let isEditing = false;
 let containerNode: HTMLElement;
-afterUpdate(()=>isEditing && containerNode && containerNode.scrollIntoView());
+afterUpdate(()=>isEditing && containerNode && containerNode.scrollIntoView({behavior: "smooth", block: "nearest", inline: "nearest"}));
 
 
 </script>

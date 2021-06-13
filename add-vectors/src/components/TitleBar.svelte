@@ -64,6 +64,10 @@ h1{
     color: #333;
     color: var(--color-secondary-light);
 }
+.icon:hover{
+    text-decoration: none; 
+    background-color: rgba(0,0,0,0.1);
+}
 .btn-info{
     font-size: .8rem;
     height: 30px;

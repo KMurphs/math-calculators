@@ -107,7 +107,7 @@ const closeModal = () => dispatch('close');
 	padding: 15px 40px 30px;
 	margin: 0;
 	font-weight: 300;
-	font-size: 1.15em;
+	font-size: 1rem;
 }
 
 
@@ -156,9 +156,16 @@ const closeModal = () => dispatch('close');
 	color: #eee;
 	color: var(--color-primary-light);
 	font-weight: bold;
+	cursor: pointer;
 }
 .md-close{
 	margin-top: 5rem !important;
+}
+.md-close:hover{
+	background: var(--color-secondary-darker);
+}
+.md-close:focus{
+	box-shadow: 0 0 0 2px rgba(0, 97, 127, 0.5);
 }
 :global(.md-content p){
 	margin-bottom: 1rem;
