@@ -8,7 +8,6 @@ export let extraClasses = "";
 <!-- https://hackernoon.com/hacking-custom-checkboxes-and-radios-5d48230440d -->
 <label for="vector-representation" class={`check-custom-container ${extraClasses}`}>
 	<!-- Input element for the checkbox -->
-	<!-- Add a `toggle-switch` class to the input element -->
 	<input type="checkbox" class="check-custom toggle-switch" id="vector-representation" bind:checked={checked}>
 	
 	<!-- Customization element for the checkbox -->

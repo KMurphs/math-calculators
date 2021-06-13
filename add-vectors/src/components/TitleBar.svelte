@@ -1,31 +1,29 @@
 
 
-<script>
-	const injectVHInCSS = ()=>{
-		// First we get the viewport height and we multiple it by 1% to get a value for a vh unit
-		let vh = window.innerHeight * 0.01;
-		// Then we set the value in the --vh custom property to the root of the document
-		document.documentElement.style.setProperty('--vh', `${vh}px`);
-	}
+<script lang="ts">
 
-	// Run it on load
-	injectVHInCSS();
-	// Run it on resize
-	window.addEventListener('resize', injectVHInCSS);
+    import { injectVHInCSS } from '../App.utils';
+	injectVHInCSS(); // Run it on load
+	window.addEventListener('resize', injectVHInCSS); // Run it on resize
 
 
+    /** Logic to bring the modal on*/
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	const showInfoModal = () => dispatch('showInfo');
+
 </script>
 
+
+
+<!-- Import libraries for the Application -->
 <svelte:head>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrer-policy="no-referrer" />
-	<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css"> -->
 	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/2.0.0/remarkable.min.js" on:load={initializeRemarkable}></script> -->
 </svelte:head>
+
+
 
 <h1> 
 	<span class="title">

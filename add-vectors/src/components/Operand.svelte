@@ -8,7 +8,7 @@ import CheckBoxWithIcons from "./CheckBoxWithIcons.svelte";
 import VectorEditor from "./VectorEditor.svelte";
 import { operandToVector } from "./Operands.utils";
 import type { TComponentRepresentationHandlers, TOperand, TRepresentationLabels, TRepresentationValues } from "./Operands.types";
-import { afterUpdate, tick } from "svelte";
+import { afterUpdate } from "svelte";
 
 
 
@@ -31,12 +31,14 @@ $: texVector = vectorToTex(operandToVector(operand));
 export let editorProxy: TComponentRepresentationHandlers = null;
 export let index = 0;
 
+/** Get labels for the editing window */
 let labels: TRepresentationLabels
 $: labels = editorProxy.getLabels();
+/** Get current representation (polar or cartesian) for the operand at index */
 let vector: TRepresentationValues 
 $: vector = editorProxy.getComponent(index);;
 
-/** Logic to allow updating of local changes to vctor in batch*/
+/** Logic to allow notification of local changes to vector to the remote source object (in an ancestor) in batch */
 let timerHandler;
 $: {
 	clearTimeout(timerHandler);
@@ -50,6 +52,7 @@ const handleToUnitVector = ()=>editorProxy.toUnitVector(index);
 
 let isEditing = false;
 let containerNode: HTMLElement;
+/** When opening editor mode, make sure the editing window is entirely visible by scrolling it into view */
 afterUpdate(()=>isEditing && containerNode && containerNode.scrollIntoView({behavior: "smooth", block: "nearest", inline: "nearest"}));
 
 

@@ -7,20 +7,32 @@ export let id = 0;
 const actualId = `${new Date().getTime()}-${id}`;
 
 
+import type { TRepresentationLabels, TRepresentationValues } from "./Operands.types";
+export let vector: TRepresentationValues;
+export let labels: TRepresentationLabels;
+
+
 
 
 import { createEventDispatcher } from 'svelte';
 const dispatch = createEventDispatcher();
 
-import type { TRepresentationLabels, TRepresentationValues } from "./Operands.types";
-export let vector: TRepresentationValues;
-export let labels: TRepresentationLabels;
-
+/**
+ * Merges `vector` to the `keyValue` object. Every key from vector that is present in the new object 'keyValue' is updated to the value from this new object
+ * @date 2021-06-13
+ * @param {any} vector:TRepresentationValues
+ * @param {any} keyValue:any
+ * @returns {void}
+ */
 const onChangeHandler = (vector: TRepresentationValues, keyValue: any) => {
+
+  // Find common keys between "vector" and "keyValue", overwrite the values in "vector" for those keys
   const updatedVector: TRepresentationValues = Object.keys(vector).reduce(
     (acc, key) => keyValue[key] ? {...acc, ...{[key]: keyValue[key]}} : acc, 
     vector
   );
+
+  // Notifiy parent components of the change
   dispatch("change", updatedVector);
 }
 

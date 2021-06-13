@@ -14,11 +14,7 @@ const onReset = ()=>onSelection("reset");
 
 <div class="menu-items-container__inner">
 
-	<!-- <label for="vector-representation" class="inline-block menu-item">
-		<input type="checkbox" id="vector-representation" bind:checked={usePolarForm}>
-		<span class="cartesian">{`(\\(x, y\\))`}</span>
-		<span class="polar">{`(\\(\\rho, \\alpha °\\))`}</span>
-	</label> -->
+
 	<CheckBox bind:checked={usePolarForm} extraClasses={"inline-block menu-item"}>
 		<span class="cartesian">{`(\\(x, y\\))`}</span>
 		<span class="polar">{`(\\(\\rho, \\alpha °\\))`}</span>
@@ -27,7 +23,6 @@ const onReset = ()=>onSelection("reset");
 
 	<ul class="reset flex">
 		<li><button class="menu-item" on:click={onNewSession}><i class="fas fa-recycle" aria-hidden="true"></i><span>Reuse</span></button></li>
-		<!-- <li><button class="menu-item"><i class="fas fa-trash-alt" aria-hidden="true"></i></button></li> -->
 		<li><button class="menu-item" on:click={onReset}><i class="far fa-trash-alt" aria-hidden="true"></i><span>Reset</span></button></li>
 		<li><button class="menu-item" on:click={onNewOperand}><i class="fas fa-plus" aria-hidden="true"></i><span>New</span> </button></li>
 	</ul>
@@ -44,7 +39,6 @@ const onReset = ()=>onSelection("reset");
 	overflow-y: hidden;
 }
 .menu-item{
-	/* padding: .7rem .8rem; */
 	background: none;
 	border: none;
 	height: 50px;
@@ -56,16 +50,11 @@ const onReset = ()=>onSelection("reset");
 .menu-item:focus{
 	border-top: 2px solid #aaa;
 	border-top: 4px solid var(--color-secondary);
-	/* border-top: 2px solid #aaa; */
 }
 .menu-item:hover,
 .menu-item:active {
   background-color: #ddd;
-  /* border-color: #ddd; */
   background-color: rgba(0,0,0,0.2);
-  /* background-color: rgba(199, 251, 233,0.1); */
-  /* border-color: rgba(0,0,0,0.1); */
-  /* color: #eee; */
 }
 button.menu-item{
 	font-size: 1.2rem;

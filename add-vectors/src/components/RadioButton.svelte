@@ -12,7 +12,6 @@ const actualId = `${new Date().getTime()}-${id}`;
 <!-- https://hackernoon.com/hacking-custom-radioes-and-radios-5d48230440d -->
 <label for={`radio-input-${actualId}`} class={`radio-custom-container ${extraClasses}`}>
 	<!-- Input element for the radio button -->
-	<!-- Add a `toggle-switch` class to the input element -->
 	<input type="radio" class="check-custom" id={`radio-input-${actualId}`} bind:group={radioGroup} {value}>
 	
 	<!-- Customization element for the radio -->

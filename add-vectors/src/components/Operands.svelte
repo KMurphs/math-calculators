@@ -9,6 +9,8 @@ export let data: TOperands = [];
 export let editorProxy: TComponentRepresentationHandlers;
 export let vectorToTex: Function;
 
+
+
 const dispatch = createEventDispatcher();
 const onNewOperand = ()=>dispatch("newOperand");
 </script>

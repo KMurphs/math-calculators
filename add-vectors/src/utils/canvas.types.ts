@@ -1,6 +1,6 @@
 export type TCanvasParameters = {
     node: HTMLCanvasElement,
-    context: any,
+    context: CanvasRenderingContext2D,
     xCenter: number, 
     yCenter: number,  
     xUnit: number,  

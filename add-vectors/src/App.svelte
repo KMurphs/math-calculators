@@ -1,5 +1,5 @@
 <script lang="ts">
-
+import { tick } from "svelte";
 import Modal from "./components/Modal.svelte";
 import About from "./components/About.svelte";
 import TitleBar from "./components/TitleBar.svelte";
@@ -7,46 +7,23 @@ import MenuBar from "./components/MenuBar.svelte";
 import Operands from "./components/Operands.svelte";
 import Results from "./components/Results.svelte";
 import VectorCanvas from "./components/VectorCanvas.svelte";
-import { buildOperand, operandEditorProxyHOF, operandToVector, sumOperands } from "./components/Operands.utils";
-import { texFromCartesianVector, texFromPolarVector } from "./utils/mathjax.utils";
-import { toPolar } from "./utils/vector.utils";
+import { operandFromVector, operandEditorProxyHOF, operandToVector, sumOperands } from "./components/Operands.utils";
 import { getBulkVectorsDrawer as _getBulkVectorsDrawer } from "./utils/canvas.utils";
+import { scrollToBottom, vectorToTex } from "./App.utils";
 import type { TOperands} from "./components/Operands.types";
 import type { TCartesianVector } from "./utils/vector.types";
-import { tick } from "svelte";
 
-
-
-let operands: TOperands = [
-// {
-//     isAddedToPrevious: true,
-// 	scalarMultiplier: 1,
-// 	xComponent: 1.235,
-// 	yComponent: 12.345
-// },{
-//     isAddedToPrevious: true,
-// 	scalarMultiplier: 1,
-// 	xComponent: 1.235,
-// 	yComponent: 12.345
-// },{
-//     isAddedToPrevious: true,
-// 	scalarMultiplier: 1,
-// 	xComponent: 1.235,
-// 	yComponent: 12.345
-// },{
-//     isAddedToPrevious: true,
-// 	scalarMultiplier: 1,
-// 	xComponent: 1.235,
-// 	yComponent: 12.345
-// }
-];
+/** Compute Resultant logic*/
+let operands: TOperands = [];
 $: vectors = operands.map(operandToVector);
-
 
 let resultant: TCartesianVector = {x: 0, y: 0};
 $: resultant = operands.reduce(sumOperands, {x: 0, y: 0});
 
 
+
+
+/** Modal Logic*/
 let isModalVisible = false;
 const showInfoModal = () => isModalVisible = true;
 const closeInfoModal = () => isModalVisible = false;
@@ -59,16 +36,10 @@ let doUsePolarForm = false;
 /** Canvas Logic */
 $: getDrawerForCurrentRepresentation = _getBulkVectorsDrawer.bind(null, doUsePolarForm);
 
-/** Tex Logic */
-const vectorToTex = (usePolarForm: boolean, vector: TCartesianVector) => {
-    if(!vector) return "";
 
-	if(!usePolarForm) return texFromCartesianVector(vector.x, vector.y);
-    
-	const polar = toPolar(vector);
-    return texFromPolarVector(polar.radius, polar.degreeAngle);
-};
+/** Tex Logic */
 $: vectorRepresentationToTex = vectorToTex.bind(null, doUsePolarForm);
+
 
 /** Operand Editor Logic*/
 $: operandEditorProxy = operandEditorProxyHOF(
@@ -79,13 +50,12 @@ $: operandEditorProxy = operandEditorProxyHOF(
 );
 
 
-const scrollToBottom = (node: HTMLElement) => node.scrollTo(0, node.scrollHeight);
-
+/** Menu Action Handlers*/
 let operandsContainer: HTMLElement = null;
 const handleMenuAction = (action: string)=>{
 	if(action == 'reset') { operands = []; resultant = {x: 0, y: 0}; return; }
-	if(action == 'new-session') { operands = [buildOperand(resultant.x, resultant.y)]; resultant = {x: 0, y: 0};  return; }
-	if(action == 'new-operand') { operands = [...operands, buildOperand()]; resultant = {x: 0, y: 0}; tick().then(()=> scrollToBottom(operandsContainer)); return; }
+	if(action == 'new-session') { operands = [operandFromVector(resultant.x, resultant.y)]; resultant = {x: 0, y: 0};  return; }
+	if(action == 'new-operand') { operands = [...operands, operandFromVector()]; resultant = {x: 0, y: 0}; tick().then(()=> scrollToBottom(operandsContainer)); return; }
 }
 </script>
 
@@ -123,6 +93,7 @@ const handleMenuAction = (action: string)=>{
 
 
 <style>
+/** Global styles */
 :global(:root){
 	--color-primary-lighter: #fafafa;
 	--color-primary-light: #eee;
@@ -141,6 +112,11 @@ const handleMenuAction = (action: string)=>{
 	--color-accent: #b1289a;
 	--color-accent-dark: #5A0B4D;
 }
+
+
+
+
+/** Main Sections layout styles + responsiveness */
 header{
 	padding: .5rem 1rem;
 	background: #333;
@@ -210,7 +186,6 @@ main{
 		justify-content: center;
 		max-width: 500px;
 		height: 100%;
-		/* padding: 0 2rem; */
 	}
 	#results-container,
 	#menu-items-container,
@@ -228,7 +203,7 @@ main{
 	.footer{
 		display: block;
 		margin: 0 auto;
-		max-width: 60vw;
+		max-width: min(60vw, 500px);
 	}
 }
 </style>
