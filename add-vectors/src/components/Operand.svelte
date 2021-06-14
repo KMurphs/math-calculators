@@ -102,6 +102,7 @@ afterUpdate(()=>isEditing && containerNode && containerNode.scrollIntoView({beha
 .operand-container{
 	display: grid;
 	grid-template: 2rem auto / 2rem 1fr 2rem;
+	grid-template: auto auto / 2rem 1fr 2rem;
 	overflow-y: hidden;
 	grid-gap: 0 .5rem;
 	margin-bottom: 1rem;

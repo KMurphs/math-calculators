@@ -39,6 +39,8 @@ input 				{
   border: none;
   font-size: 1rem;
   background: rgba(0,0,0,0.04);
+  line-height: 1.5;
+  min-height: 36px;
   /* border-bottom: 1px solid #757575; */
 }
 input:focus 		{ outline:none; }

@@ -105,15 +105,18 @@ function _drawCanvasAxis(context: CanvasRenderingContext2D, xCenter: number, yCe
 
 
 /**
- * Draws some text at coordinates (xCoord, yCoord). The function also has some logic to prevent the text from going outside the borders of the canvas
+ * Draws some text at coordinates (xCoord, yCoord). 
+ * The function also has some logic to prevent the text from going outside the borders of the canvas
  * @date 2021-06-13
  * @param {CanvasRenderingContext2D} context
  * @param {string} text: text to write
  * @param {number} xCoord: where to write
  * @param {number} yCoord: where to write
+ * @param {boolean} isInRightPlane: captures relative position with respective to user coordinates system
+ * @param {boolean} isInUpPlane: captures relative position with respective to user coordinates system
  * @returns {void}
  */
-function addCoordinates(context: CanvasRenderingContext2D, text: string, xCoord: number, yCoord: number){//, isInUpPlane = true, isInRightPlane = true){
+function addCoordinates(context: CanvasRenderingContext2D, text: string, xCoord: number, yCoord: number, isInRightPlane = true, isInUpPlane = true){
     if(!context || !text) return;
     if(!xCoord) xCoord = 0;
     if(!yCoord) yCoord = 0;
@@ -123,13 +126,13 @@ function addCoordinates(context: CanvasRenderingContext2D, text: string, xCoord:
     context.font = `${margin - 2}px Arial`;
 
     // Logic to align text not to overflow on canvas
-    const isInUpPlane = yCoord < 0;
-    const isInRightPlane = xCoord > 0;
+    // const isInUpPlane = yCoord > 0;
+    // const isInRightPlane = xCoord > 0;
     context.textAlign = "center";
     context.textAlign = isInRightPlane ? "right" : "left";
 
     // Write text
-    context.fillText(text, xCoord + margin * (isInRightPlane ? 1 : -1), yCoord + margin * (isInUpPlane ? 1 : -1)); 
+    context.fillText(text, xCoord + margin * (isInRightPlane ? -1 : 1), yCoord - margin * (isInUpPlane ? -1 : 1)); 
 }
 
 
@@ -216,7 +219,7 @@ function drawCartesianVector(canvasData: TCanvasParameters, xComponent: number, 
     drawCanvasArrow(canvasData.context, canvasData.xCenter, canvasData.yCenter, canvasData.xCenter + canvasData.xUnit * xComponent, canvasData.yCenter - canvasData.yUnit * yComponent);
     
     // Add label to canvas
-    if(doAddCoords) addCoordinates(canvasData.context, label ? label : `(${formatNumber(xComponent)}, ${formatNumber(yComponent)})`, canvasData.xCenter + canvasData.xUnit * xComponent, canvasData.yCenter - canvasData.yUnit * yComponent);//, yComponent < 0, xComponent > 0);
+    if(doAddCoords) addCoordinates(canvasData.context, label ? label : `(${formatNumber(xComponent)}, ${formatNumber(yComponent)})`, canvasData.xCenter + canvasData.xUnit * xComponent, canvasData.yCenter - canvasData.yUnit * yComponent, xComponent > 0, yComponent < 0);
 }
 
 
@@ -253,9 +256,9 @@ function getBulkVectorsDrawer(usePolarForm: boolean, canvasData: TCanvasParamete
     const drawFunction = drawVector.bind(null, usePolarForm);
 
     // Return new function that will take an array of vectors and a color, and will draw them on the canvas
-    return (vectorsToDraw: TCartesianVector[], penColor: string = "#000")=>{
+    return (vectorsToDraw: TCartesianVector[], penColor: string = "#000", penWidth: number = 1)=>{
         // Prepare pen
-        canvasData.context.lineWidth = 1;
+        canvasData.context.lineWidth = penWidth || 1;
         canvasData.context.strokeStyle = penColor;
         canvasData.context.beginPath();
 

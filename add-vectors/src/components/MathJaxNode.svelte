@@ -29,7 +29,8 @@ onMount(() => {
     tick().then(()=>forceMathjaxRender(mathjaxDOMNode));
 });
 beforeUpdate(() => resetMathjaxNode(mathjaxDOMNode, mathjaxExpression));
-afterUpdate(() => forceMathjaxRender(mathjaxDOMNode));
+// afterUpdate(() => forceMathjaxRender(mathjaxDOMNode));
+afterUpdate(() => forceMathjaxRender());
 
 </script>
 

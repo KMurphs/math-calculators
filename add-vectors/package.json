@@ -1,5 +1,6 @@
 {
   "name": "svelte-app",
+  "homepage": "/math-calculators/",
   "version": "1.0.0",
   "private": true,
   "scripts": {

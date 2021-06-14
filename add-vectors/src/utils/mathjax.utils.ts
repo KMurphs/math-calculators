@@ -30,7 +30,7 @@ const texFromPolarVector = (polarRadius: number, polarDegreeAngle: number): stri
  * @param {HTMLElement} node: html dom node to re-render
  * @returns {void}
  */
- const forceMathjaxRender = (node: HTMLElement) => (window as any).MathJax?.typeset([node]);
+ const forceMathjaxRender = (node?: HTMLElement) => (window as any).MathJax?.typeset(node ? [node] : undefined);
 
 
 /**

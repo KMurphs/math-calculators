@@ -43,7 +43,7 @@ window.addEventListener('resize', ()=>setupCanvas(canvasNode));
 
 
 /** Logic to redraw reactively when the data for the canvas change*/
-const operandsCanvasColor = "#333";
+const operandsCanvasColor = "#555";
 const resultantCanvasColor = "#00617F";//"#b1289a";
 $: canvas && vectors && getBulkDrawer && setupCanvas(canvasNode);
 $: canvas && vectors && getBulkDrawer && tick().then(() => { clearCanvas(canvas); drawCanvasAxis(canvas) });
@@ -51,7 +51,7 @@ $: canvas && vectors && tick().then(() => {
 	// Draw operand vectors
 	getBulkDrawer(canvas)(vectors, operandsCanvasColor); 
 	// Draw resultant vector
-	getBulkDrawer(canvas)([resultant], resultantCanvasColor); 
+	getBulkDrawer(canvas)([resultant], resultantCanvasColor, 3); 
 });
 </script>
 

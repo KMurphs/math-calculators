@@ -90,6 +90,7 @@ const closeModal = () => dispatch('close');
 	position: relative;
 	border-radius: 3px;
 	margin: 0 auto;
+	line-height: 1.5;
 }
 
 .md-content h3 {
