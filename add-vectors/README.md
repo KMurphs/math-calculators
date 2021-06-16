@@ -74,9 +74,9 @@ The logic to do this was confined a svelte component re-used for all mathjax nod
 
 ## Links
 
-The Github repository is at [https://github.com/KMurphs/math-calculators](https://github.com/KMurphs/math-calculators).
-The Application is live at [https://kmurphs.github.io/math-calculators/](https://kmurphs.github.io/math-calculators/)
-This documentation also lives along side the application at [https://kmurphs.github.io/math-calculators/docs](https://kmurphs.github.io/math-calculators/docs)
+-  The Github repository is at [https://github.com/KMurphs/math-calculators](https://github.com/KMurphs/math-calculators).
+-  The Application is live at [https://kmurphs.github.io/math-calculators/](https://kmurphs.github.io/math-calculators/)
+-  This documentation also lives along side the application at [https://kmurphs.github.io/math-calculators/docs](https://kmurphs.github.io/math-calculators/docs)
 
 ## Known Issues
 
