@@ -134,6 +134,7 @@ main{
 
 #results-container{
 	max-width: min(50vh, 100%);
+	max-width: min(40vh, 100%);
 	margin: 0 auto;
 	padding: 1rem;
 	overflow: auto;

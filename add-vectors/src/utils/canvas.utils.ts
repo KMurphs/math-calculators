@@ -291,7 +291,7 @@ function getBulkVectorsDrawer(usePolarForm: boolean, canvasData: TCanvasParamete
  * @param {TCartesianVector[]} vectors:
  * @returns {number}: The `canvas-unit`
  */
-const getUnit = (canvasWidth: number, vectors: TCartesianVector[])=> (!vectors ? 10 : 0.4 * (canvasWidth || 300) / vectors.reduce((acc, item) => Math.max(acc, item.x, item.y), 1));
+const getUnit = (canvasWidth: number, vectors: TCartesianVector[])=> (!vectors ? 10 : 0.4 * (canvasWidth || 300) / vectors.reduce((acc, item) => Math.max(acc, Math.abs(item.x), Math.abs(item.y)), 1));
 
 
 
