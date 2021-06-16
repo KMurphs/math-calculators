@@ -47,11 +47,11 @@ Some of these original requirements are listed below:
 
 ### UX/UI Design, UI Wireframe
 
-![UI Draft Wireframe](https://raw.githubusercontent.com/KMurphs/math-calculators/main/add-vectors/imgs/add-vector-w700.png "Early wireframe draft")
+![UI Draft Wireframe](https://raw.githubusercontent.com/KMurphs/math-calculators/main/add-vectors/imgs/add-vector-w500.png "Early wireframe draft")
 
 1. The initial question was to establish an *information hierarchy*. The most important pieces of information were to be accessed quickly. The canvas was one such piece of information, the current operands and resultant were also quite important. Finally, the current vector representation setting for the app also had to be prominent.
 
-2. The UI was to be kept simple. Colors were researched and settled on the blue-ish color ``#00617f`` and ``b1289a`` for accents.
+2. The UI was to be kept simple. Colors were researched and settled on the blue-ish color ``#00617f`` as a seondary color and ``b1289a`` for accents.
 
 
 ### MathJax Nodes
@@ -68,7 +68,7 @@ The logic to do this was confined a svelte component re-used for all mathjax nod
 
 ## Results
 
-![Final UI](https://raw.githubusercontent.com/KMurphs/math-calculators/main/add-vectors/imgs/finished-product-w700.png "Final UI")
+![Final UI](https://raw.githubusercontent.com/KMurphs/math-calculators/main/add-vectors/imgs/finished-product.png "Final UI")
 
 
 
