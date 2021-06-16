@@ -34,7 +34,7 @@ My niece wanted me to review some of her homeworks on vector addition. Altough I
 ## The Process
 
 
-## Putting together Requirements for the Application
+### Putting together Requirements for the Application
 
 Some of these original requirements are listed below:
 
@@ -45,9 +45,9 @@ Some of these original requirements are listed below:
 - Reset UI
 - Display resultant
 
-## UX/UI Design, UI Wireframe
+### UX/UI Design, UI Wireframe
 
-![UI Draft Wireframe](https://raw.githubusercontent.com/KMurphs/math-calculators/main/add-vectors/imgs/add-vector.png "Early wireframe draft")
+![UI Draft Wireframe](https://raw.githubusercontent.com/KMurphs/math-calculators/main/add-vectors/imgs/add-vector-w700.png "Early wireframe draft")
 
 1. The initial question was how to retrieve the top (50) most frequent in a body of text. There are many solution to a problem like this: 
     - The initial inclination was to use a dictionary where each word would become a key associated to the number of times that word occured.

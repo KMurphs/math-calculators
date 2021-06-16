@@ -11,7 +11,7 @@
 <p class="about-links">
 	Got a question? To get in touch, find me on Twitter 
 	<strong><a href="https://twitter.com/Murphs_K" rel="noopener noreferrer" target="_blank">@Murphs_K</a></strong>, or
-	on Github 
+	on Github at
 	<strong><a href="https://github.com/KMurphs" rel="noopener noreferrer" target="_blank">KMurphs</a></strong><br>
 </p>
 
