@@ -47,7 +47,7 @@ Some of these original requirements are listed below:
 
 ## UX/UI Design, UI Wireframe
 
-![UI Draft Wireframe](https://raw.githubusercontent.com/KMurphs/word-inventorier/master/docs/Process.png "Development and Design Process")
+![UI Draft Wireframe](https://raw.githubusercontent.com/KMurphs/math-calculators/main/add-vectors/imgs/add-vector.png "Early wireframe draft")
 
 1. The initial question was how to retrieve the top (50) most frequent in a body of text. There are many solution to a problem like this: 
     - The initial inclination was to use a dictionary where each word would become a key associated to the number of times that word occured.

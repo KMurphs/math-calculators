@@ -2,6 +2,9 @@
 <p class="about-title">
 	<strong>"Add Vectors"</strong> Application written by Stephan K.<br>
 	The application can be used to perform addition and substraction of 2D (2 dimensional) vectors. It allows both cartesian and polar representations.
+	<br>
+	The source code is hosted on <strong><a href="https://github.com/KMurphs/math-calculators" rel="noopener noreferrer" target="_blank">Github</a></strong>, 
+	and documentation can be found at <strong><a href="/docs" rel="noopener noreferrer" target="_blank">/docs</a></strong>
 </p>
 
 
