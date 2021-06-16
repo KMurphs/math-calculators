@@ -103,7 +103,7 @@ const handleMenuAction = (action: string)=>{
 	--color-secondary-lighter: #d9f6ff;
 	--color-secondary-light: #a3eaff;
 	--color-secondary: #24a5cc;
-	--color-secondary-dark: rgb(0, 97, 127);
+	--color-secondary-dark: #00617f;
 	--color-secondary-darker: #004e66;
 	--color-accent-lighter: #ffdbf9;
 	--color-accent-lighter3: #fff5fd;

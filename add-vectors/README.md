@@ -49,131 +49,49 @@ Some of these original requirements are listed below:
 
 ![UI Draft Wireframe](https://raw.githubusercontent.com/KMurphs/math-calculators/main/add-vectors/imgs/add-vector-w700.png "Early wireframe draft")
 
-1. The initial question was how to retrieve the top (50) most frequent in a body of text. There are many solution to a problem like this: 
-    - The initial inclination was to use a dictionary where each word would become a key associated to the number of times that word occured.
+1. The initial question was to establish an *information hierarchy*. The most important pieces of information were to be accessed quickly. The canvas was one such piece of information, the current operands and resultant were also quite important. Finally, the current vector representation setting for the app also had to be prominent.
 
-    <br>Then an extra requirement was added to make the problem a little bit more interesting: 
-    - The algorithm should be able to look at words with lengths in a certain range (say between 10 and 20).
-
-    The initial algorithm would still inventory the whole text in ``O(N)``, where ***N is the number of words in the text***. The dictionary would call for a space complexity of ``O(M)``, where  ***M is the number of unique words in the text***. 
-
-2. From thereon, to retrieve the top 50, a sorting algorithm could be used and the solution would take ``O(MlogM)``. 
-<br>A *modified bubble sort* could bring down the time complexity to ``O(kM)`` by only considering the top K most frequent words - As long as, K is way smaller than logM (``K << logM``), the modified bubble sort is a better alternative. 
-<br>On top of this, this modified bubble would handle the length requirement of the query without trouble at all.
-
-3. Another requirement was to be able to reuse the processing of this huge text to run different queries at a later point. This meant that the text processing algorithm and the query processing happened at different point in time.
-    - So the dictionary algorithm in ``O(N)`` and ``O(M)`` could still be used for the text processing. The query processing would use the modified bubble sorting in ``O(M)`` and ``O(k)``.
-
-    A step further was to investigate whether this last time complexity of ``O(M)`` could be reduced. 
-    <br>For that, an extra data structure was created during the text processing. 
-    - This data structure is also a dictionary where keys are words lengths in the text, and values are linkedlist of words whose lengths ave the value specified by the key they are associated to. This extra structure adds another ``O(M + d)`` to the space complexity of the text processing phase - ***d (the number of possible word lengths within the text)*** is bounded by the longest word in the english dictionary ***pneumonoultramicroscopicsilicovolcanoconiosis - Length = 45***.
-    <br>``d <= 45`` therefore ``d << M``. 
-    
-    This data structure will bring down the time complexity of the query processing by allowing the algorithm to only process ***words that have length within a specified range***. If there are ***V*** such words, the new time complexity is ``O(V)``. <br>In some instances V can be way smaller than M.
-
-In summary, 
-- Text Processing: ``O(N) Time Complexity, O(M) space complexity``
-- Query Processing: ``O(V) Time Complexity, O(k) space complexity``
-
-where,
-- N: number of words in text
-- M: number of unique words in text
-- V: number of unique words with length within the specified range
-- k: number of words of interest (the top k most frequent words)
-
-The dictionary of frequencies ``IDictionary<string, int>`` and the dictionary of lengths ``IDictionary<int, LinkedList<string>>`` can easily be serialized and deserialized.
+2. The UI was to be kept simple. Colors were researched and settled on the blue-ish color ``#00617f`` and ``b1289a`` for accents.
 
 
+### MathJax Nodes
 
-## MVP and Unit Testing
+The Mathjax nodes need a special treatment. When the library is first loaded on the page, it remembers all the nodes it processed and does not re-process them again.
 
-See ``<Current Repository>/text-inventorier/Inventorier/``
+To force a re-rendering (because the content of the node is changed by the application, e.g. changing vector representation), some things need to happen.
 
-The first step was to implement the core service that would process the text and run the query. Tests were developed to ensure functionality and corner cases (See ``<Current Repository>/text-inventorier/Inventorier.NUnitTests/``)
-
-A range of utility classes are used to fetch the text when a URL is provided, preprocess the text (Handle special characters, lower case all the text, ...), serialize and deserialize the data structures, hashing the text into an ID that can be used later to skip re-processing the text if the processing result is stored in our database.
-
-``<Current Repository>/text-inventorier/scripts/misc.bat`` describes some of the commands used to configure the C# project in Visual Studio Code (VSCode).
-
-## API and Productionization
-
-See ``<Current Repository>/text-inventorier/WebApp/``
-Now that we have functional code, we can wrap it into an API.
-
-First step was to set up a ASP.NET server locally, and integrate with our core service at endpoint ``<Site URL>/api/corpusinventory``. Then integrate with MongoDB to store and retrieve serialized data structures.
-
-A docker image for ``aspnet:3.1`` is available (See ``<Current Repository>/text-inventorier/WebApp/DockerFile``). The image was built, pushed to a remote repo, and Heroku was configured to retrieve and run the docker image.
-
-``<Current Repository>/text-inventorier/scripts/push-app-to-backend.bat`` describes some of the commands used to perform this.
-
-
-
-## UI Solution Research and Ideation
-
-To show how the API could be consumed, a React Client was to be written that would demonstrate this.
-
-Sites like Dribble, Behance, and Google were surveyed to generate ideas for a suitable UI/UX concepts related to our word inventorier application.
-
-Information Architecture was first established as the most important aspect of the UI/UX considerations. Once related questions were answered, wireframes were drafted.
-
-![Wireframes](https://raw.githubusercontent.com/KMurphs/word-inventorier/master/docs/Process.png "Wireframes")
-
-## UI Design and Prototyping
-
-See ``<Current Repository>/ui-design/``
-
-Figma was used to design the UI.
-
-
-### The Mobile first Version of the front end client
-
-![Mobile First Version](https://raw.githubusercontent.com/KMurphs/word-inventorier/master/docs/ui-mobile-lg.png "Mobile First Version of UI")
-
-### The Desktop Version of the front end client
-
-![Mobile First Version](https://raw.githubusercontent.com/KMurphs/word-inventorier/master/docs/ui-desktop-lg.png "Desktop Version of UI")
+The logic to do this was confined a svelte component re-used for all mathjax nodes.
 
 
 
 
-## UI Implementation and Tests
 
-See ``<Current Repository>/ui/``
+## Results
 
-Setting up ``tailwindcss`` with ``create-react-app`` was quite the mission.
-
-``<Current Repository>/text-inventorier/scripts/setup-ui.bat`` describes some of the commands used to setup ``tailwindcss`` with ``create-react-app``.
+![Final UI](https://raw.githubusercontent.com/KMurphs/math-calculators/main/add-vectors/imgs/finished-product-w700.png "Final UI")
 
 
 
+## Links
 
-## UI Productionization
+The Github repository is at [https://github.com/KMurphs/math-calculators](https://github.com/KMurphs/math-calculators).
+The Application is live at [https://kmurphs.github.io/math-calculators/](https://kmurphs.github.io/math-calculators/)
+This documentation also lives along side the application at [https://kmurphs.github.io/math-calculators/docs](https://kmurphs.github.io/math-calculators/docs)
 
-See ``<Current Repository>/ui/``
+## Known Issues
 
-The build files from ``npm react build`` were copied to ``<Current Repository>/text-inventorier/WebApp/wwwroot``
+- **UI Lag**: When more than 10 operands are present on the UI, changing between cartesian and polar representation for example, exposes a lag in the UI. This is exacerbated as the number of operands increase. <br><br>
+The issue is believed to be cause by a combination of factor: Under the hood only the cartesian representation of the vector is kept in memory. Whenever, the polar representation is needed it is calculated. Moreover, when this happens, all the mathjax node on the DOM must be updated, reprocessed and re-rendered. <br><br>
+One possible solution would be to keep both representation in memory and have mathjax process both types of DOM nodes (for the cartesian and polar representation). A CSS class could then be used to hide one representation and show the other.
 
-Then, the webapp was recompiled, the docker image rebuilt, retagged and pushed to the remote repo.
-
-Heroku redeployed the new image. The application is live at [Heroku](https://corpus-inventory.herokuapp.com/) 
-
-
-
-## Iteration
-
-Although the process is described sequentially, there are times were things happen through iteration.
-
-
-## Github Page
-
-Some files were added to expose the project repo as github pages
-- ``<Current Repository>/assets/``
-- ``<Current Repository>/_config.yml``
+- **No Space For Vector Editor on Mobile**: On a mobile phone, the vector editor is shrank when the phone keyboard is displayed. This has a negative effect on the UX of the App. <br><br>
+The solution would be to have the editor displayed in a modal window, for mobile phones. There would then be enough space and make the user more comfortable.
 
 ## References
-1. https://stackoverflow.com/questions/4495241/given-a-file-find-the-ten-most-frequently-occurring-words-as-efficiently-as-pos
-2. https://www.geeksforgeeks.org/python-count-occurrences-of-each-word-in-given-text-file-using-dictionary/
-3. https://tailwindcss.com/docs/guides/create-react-app
-4. https://tailwindcss.com/docs/installation
-5. https://tailwindcss.com/docs/installation#post-css-7-compatibility-build
-6. Some docs are available as pdfs under ``<Current Repository>/docs/``
+1. https://svelte.dev/tutorial/
+2. http://docs.mathjax.org/en/latest/web/typeset.html
+3. https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference
+4. https://blog.bloomca.me/2017/12/15/how-to-push-folder-to-github-pages.html
+
+
+
