@@ -4,7 +4,7 @@
 
 ## Overview
 
--  Project was designed to solve math problems that my niece had. The idea was to allow her to quickly verify her solution and get a visual representation for what vector addition, substraction and scalar multiplication do. 
+-  Project was designed to solve a math problems that my niece had. The idea was to allow her to quickly verify her solution and get a visual representation for what vector addition, substraction and scalar multiplication do. 
 -  The UI framework used to build the application is **Svelte**. 
 -  The Math equations and notations are processed and rendered by a Javascript library **MathJax**. The library processes **tex** strings on a page and convert these DOM elements into good looking math equations.
 -  The visual display for the vector is done on the **HTML5 Canvas** element.
@@ -15,7 +15,8 @@
 
 ## Definition
 
-The application allows the user to enter vectors in either **cartesian** or **polar** representation, swithing between the two. The user can then decide whether a vector must be added or substracted to the previous one. There is also a scalar multiplier for the vector before it is added or sibstracted. 
+The application allows the user to enter vectors in either **cartesian** or **polar** representation, swithing between the two. The user can then decide whether a vector must be added or substracted to the previous one. There is also a scalar multiplier for the vector before it is added or sibstracted.
+ 
 The current visual representation for the all these operands (i.e. the vectors that must be added) and the current resultant (i.e. the sum of the operand) is updated in real time on the canvas.
 
 **Duration**: 3 days 
@@ -51,16 +52,16 @@ Some of these original requirements are listed below:
 
 1. The initial question was to establish an *information hierarchy*. The most important pieces of information were to be accessed quickly. The canvas was one such piece of information, the current operands and resultant were also quite important. Finally, the current vector representation setting for the app also had to be prominent.
 
-2. The UI was to be kept simple. Colors were researched and settled on the blue-ish color ``#00617f`` as a seondary color and ``b1289a`` for accents.
+2. The UI was to be kept simple. Colors were researched and settled on the blue-ish color ``#00617f`` as a seondary color and the dark pink ``b1289a`` for accents.
 
 
 ### MathJax Nodes
 
-The Mathjax nodes need a special treatment. When the library is first loaded on the page, it remembers all the nodes it processed and does not re-process them again.
+The Mathjax nodes need a special treatment. When the library is first loaded on the page, it processes all the tex nodes, and remembers all of them as being processed. It does not re-process them again.
 
 To force a re-rendering (because the content of the node is changed by the application, e.g. changing vector representation), some things need to happen.
 
-The logic to do this was confined a svelte component re-used for all mathjax nodes.
+The logic to do this was confined to a svelte component that is re-used for all mathjax/tex nodes.
 
 
 
@@ -85,7 +86,7 @@ The issue is believed to be cause by a combination of factor: Under the hood onl
 One possible solution would be to keep both representation in memory and have mathjax process both types of DOM nodes (for the cartesian and polar representation). A CSS class could then be used to hide one representation and show the other.
 
 - **No Space For Vector Editor on Mobile**: On a mobile phone, the vector editor is shrank when the phone keyboard is displayed. This has a negative effect on the UX of the App. <br><br>
-The solution would be to have the editor displayed in a modal window, for mobile phones. There would then be enough space and make the user more comfortable.
+The solution would be to have the editor displayed in a modal window, for mobile phones. There would then be enough space, it would also make for a better user experience.
 
 ## References
 1. https://svelte.dev/tutorial/
